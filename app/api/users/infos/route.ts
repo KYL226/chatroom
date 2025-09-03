@@ -77,7 +77,7 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ error: 'Token invalide.' }, { status: 401 });
     }
 
-    const body = await req.json();
+    const body = await req.json() as { name?: string; avatar?: string; bio?: string; interests?: string[] };
     console.log("API /api/users/infos PATCH - Données reçues:", body);
 
     await connectDB();
@@ -89,14 +89,12 @@ export async function PATCH(req: Request) {
     }
 
     // Mettre à jour les champs autorisés
-    const allowedFields = ['name', 'avatar', 'bio', 'interests'];
-    const updateData: any = {};
+    const updateData: { name?: string; avatar?: string; bio?: string; interests?: string[] } = {};
 
-    for (const field of allowedFields) {
-      if (body[field] !== undefined) {
-        updateData[field] = body[field];
-      }
-    }
+    if (body.name !== undefined) updateData.name = body.name;
+    if (body.avatar !== undefined) updateData.avatar = body.avatar;
+    if (body.bio !== undefined) updateData.bio = body.bio;
+    if (body.interests !== undefined) updateData.interests = body.interests;
 
     // Mettre à jour l'utilisateur
     const updatedUser = await User.findByIdAndUpdate(

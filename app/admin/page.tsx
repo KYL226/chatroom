@@ -9,7 +9,7 @@ export default function AdminPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
         <p className="text-gray-600">
-          Bienvenue dans l'interface d'administration de ChatRoom
+          Bienvenue dans l&apos;interface d&apos;administration de ChatRoom
         </p>
       </div>
       

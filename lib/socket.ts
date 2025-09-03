@@ -48,7 +48,7 @@ export default function SocketHandler(req: NextApiRequest, res: NextApiResponse)
 
       socket.data.user = decoded;
       next();
-    } catch (error) {
+    } catch {
       next(new Error('Authentication error'));
     }
   });

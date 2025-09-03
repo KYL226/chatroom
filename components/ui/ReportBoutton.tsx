@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Flag, MoreVertical } from 'lucide-react';
+import { Flag } from 'lucide-react';
 import ReportModal from './ReportModal';
 
 interface ReportButtonProps {

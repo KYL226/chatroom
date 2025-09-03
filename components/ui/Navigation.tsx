@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Users, MessageCircle, Settings, LogOut, Shield } from "lucide-react";
+import { Home, MessageCircle, LogOut, Shield } from "lucide-react";
 
 interface User {
   _id: string;

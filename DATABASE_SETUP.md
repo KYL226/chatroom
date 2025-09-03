@@ -15,7 +15,7 @@ Ce guide vous explique comment configurer MongoDB pour votre application Chatroo
 #### Windows
 1. Téléchargez MongoDB Community Server depuis [mongodb.com](https://www.mongodb.com/try/download/community)
 2. Installez MongoDB en suivant l'assistant
-3. MongoDB sera accessible sur `mongodb://localhost:27017`
+
 
 #### macOS
 ```bash
@@ -51,7 +51,7 @@ Créez un fichier `.env.local` à la racine du projet :
 
 ```env
 # Configuration MongoDB
-MONGODB_URI=mongodb://localhost:27017/chatroom
+MONGODB_URI=
 
 # Configuration JWT
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production

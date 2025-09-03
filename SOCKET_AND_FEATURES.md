@@ -76,9 +76,7 @@ Authorization: Bearer <token>
 ## 🔧 Configuration
 
 ### Variables d'Environnement
-```env
-# MongoDB
-MONGODB_URI=mongodb://localhost:27017/chat_bd
+
 
 # JWT
 JWT_SECRET=your-super-secret-jwt-key

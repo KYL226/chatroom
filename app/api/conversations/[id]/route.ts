@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
+import { connectDB } from '@/lib/mongodb';
 import Conversation from '@/models/Conversation';
-import User from '@/models/User';
+// import User from '@/models/User';
 import { verifyToken } from '@/lib/auth';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -22,7 +22,8 @@ export async function GET(
       return NextResponse.json({ error: 'Token invalide' }, { status: 401 });
     }
 
-    const conversation = await Conversation.findById(params.id)
+    const { id } = await params;
+    const conversation = await Conversation.findById(id)
       .populate('members', 'name email avatar role isOnline')
       .populate('lastMessage.sender', 'name email avatar');
     

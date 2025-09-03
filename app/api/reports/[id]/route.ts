@@ -9,7 +9,7 @@ import { verifyToken } from '@/lib/auth';
 // Mettre à jour le statut d'un signalement
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -33,7 +33,8 @@ export async function PATCH(
     const body = await request.json();
     const { status, moderatorNotes, action } = body;
 
-    const report = await Report.findById(params.id);
+    const { id } = await params;
+    const report = await Report.findById(id);
     if (!report) {
       return NextResponse.json({ error: 'Report not found' }, { status: 404 });
     }
@@ -66,7 +67,7 @@ export async function PATCH(
 // Supprimer un signalement
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -87,7 +88,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
     }
 
-    const report = await Report.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const report = await Report.findByIdAndDelete(id);
     if (!report) {
       return NextResponse.json({ error: 'Report not found' }, { status: 404 });
     }
@@ -104,7 +106,7 @@ export async function DELETE(
 }
 
 // Fonction pour appliquer les actions de modération
-async function applyModerationAction(report: any, action: string, moderatorId: string) {
+async function applyModerationAction(report: { type: string; reason: string; reportedUser?: string; reportedMessage?: string; reportedRoom?: string }, action: string, moderatorId: string) {
   try {
     switch (action) {
       case 'ban_user':
@@ -112,7 +114,9 @@ async function applyModerationAction(report: any, action: string, moderatorId: s
           await User.findByIdAndUpdate(report.reportedUser, {
             isBanned: true,
             banReason: `Banned due to report: ${report.reason}`,
-            banExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 jours
+            banExpiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 jours
+            bannedBy: moderatorId,
+            bannedAt: new Date()
           });
         }
         break;

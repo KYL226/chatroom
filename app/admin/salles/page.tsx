@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Plus, Search, Users, MessageCircle, Lock, Unlock, Trash2 } from "lucide-react";
 
 interface Room {
@@ -27,30 +27,7 @@ export default function AdminSallesPage() {
 
   const [token, setToken] = useState("");
 
-  // Charger le token depuis le localStorage
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedToken = localStorage.getItem('token') || "";
-      setToken(storedToken);
-    }
-  }, []);
-
-  // Appeler fetchRooms uniquement quand le token est prêt
-  useEffect(() => {
-    if (token) {
-      fetchRooms();
-    }
-  }, [token]);
-
-  useEffect(() => {
-    const filtered = rooms.filter(room =>
-      room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      room.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredRooms(filtered);
-  }, [searchTerm, rooms]);
-
-  const fetchRooms = async () => {
+  const fetchRooms = useCallback(async () => {
     try {
       console.log("Token utilisé pour /api/admin/rooms:", token); // Debug
       const response = await fetch("/api/admin/rooms", {
@@ -64,12 +41,35 @@ export default function AdminSallesPage() {
       } else {
         setError(data.error || "Erreur lors du chargement des salles");
       }
-    } catch (error) {
+    } catch {
       setError("Erreur de connexion");
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  // Charger le token depuis le localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem('token') || "";
+      setToken(storedToken);
+    }
+  }, []);
+
+  // Appeler fetchRooms uniquement quand le token est prêt
+  useEffect(() => {
+    if (token) {
+      fetchRooms();
+    }
+  }, [token, fetchRooms]);
+
+  useEffect(() => {
+    const filtered = rooms.filter(room =>
+      room.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      room.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredRooms(filtered);
+  }, [searchTerm, rooms]);
 
   const handleCreateRoom = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,7 +96,7 @@ export default function AdminSallesPage() {
       } else {
         setError(data.error || "Erreur lors de la création");
       }
-    } catch (error) {
+    } catch {
       setError("Erreur de connexion");
     }
   };
@@ -120,7 +120,7 @@ export default function AdminSallesPage() {
       } else {
         setError(data.error || "Erreur lors de la suppression");
       }
-    } catch (error) {
+    } catch {
       setError("Erreur de connexion");
     }
   };

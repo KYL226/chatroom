@@ -39,7 +39,7 @@ interface MenuItem {
 }
 
 interface AdminSidebarProps {
-  user: User;
+  user: User | null;
 }
 
 export default function AdminSidebar({ user }: AdminSidebarProps) {
@@ -126,6 +126,11 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
   const isActive = (href: string) => {
     return pathname === href || pathname.startsWith(href);
   };
+
+  // Si pas d'utilisateur, ne rien afficher
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="w-64 min-h-screen bg-white border-r border-gray-200 shadow-lg">

@@ -60,7 +60,7 @@ export function refreshToken(token: string): string | null {
     }
     
     // Créer un nouveau token avec les mêmes données mais une nouvelle expiration
-    const { iat: _iat, exp: _exp, ...payload } = decoded;
+    const { ...payload } = decoded;
     return generateToken(payload);
   } catch {
     return null;

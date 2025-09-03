@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Save, Settings, Shield, Users, MessageSquare, Hash, Bell, Database, Key, Globe, Lock, Eye, EyeOff } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Save, Settings, Shield, Users, Bell, Globe } from 'lucide-react';
 
 interface Settings {
   general: {
@@ -95,13 +95,9 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<'general' | 'security' | 'moderation' | 'notifications' | 'appearance'>('general');
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    fetchSettings();
-  }, []);
 
-  const fetchSettings = async () => {
+  const fetchSettings = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch('/api/admin/settings', {
@@ -117,9 +113,13 @@ export default function SettingsPage() {
     } catch (error) {
       console.error('Erreur lors du chargement des paramètres:', error);
     }
-  };
+  }, [settings]);
 
-  const saveSettings = async () => {
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
+
+  const saveSettings = useCallback(async () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
@@ -143,9 +143,9 @@ export default function SettingsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [settings]);
 
-  const updateSetting = (section: keyof Settings, key: string, value: any) => {
+  const updateSetting = (section: keyof Settings, key: string, value: string | number | boolean | string[]) => {
     setSettings(prev => ({
       ...prev,
       [section]: {
@@ -202,7 +202,7 @@ export default function SettingsPage() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as 'general' | 'security' | 'notifications' | 'appearance')}
                 className={`flex items-center py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
@@ -227,7 +227,7 @@ export default function SettingsPage() {
               
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Nom du site
                   </label>
                   <input
@@ -239,7 +239,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Description du site
                   </label>
                   <input
@@ -251,7 +251,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Utilisateurs max par salle
                   </label>
                   <input
@@ -263,7 +263,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Longueur max des messages
                   </label>
                   <input
@@ -275,7 +275,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Taille max des fichiers (MB)
                   </label>
                   <input
@@ -301,14 +301,14 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Types de fichiers autorisés
                 </label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {settings.general.allowedFileTypes.map((type) => (
                     <span
                       key={type}
-                      className="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full"
+                      className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full"
                     >
                       {type}
                       <button
@@ -338,7 +338,7 @@ export default function SettingsPage() {
                       addFileType(input.value);
                       input.value = '';
                     }}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-r-md hover:bg-blue-700"
+                    className="px-4 py-2 text-white bg-blue-600 rounded-r-md hover:bg-blue-700"
                   >
                     Ajouter
                   </button>
@@ -380,7 +380,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Longueur min du mot de passe
                   </label>
                   <input
@@ -392,7 +392,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Timeout de session (heures)
                   </label>
                   <input
@@ -404,7 +404,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Tentatives de connexion max
                   </label>
                   <input
@@ -503,7 +503,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Signalements avant bannissement
                   </label>
                   <input
@@ -515,7 +515,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Durée de bannissement (jours)
                   </label>
                   <input
@@ -529,14 +529,14 @@ export default function SettingsPage() {
 
               {settings.moderation.enableWordFilter && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Mots filtrés
                   </label>
                   <div className="flex flex-wrap gap-2 mb-2">
                     {settings.moderation.filteredWords.map((word) => (
                       <span
                         key={word}
-                        className="inline-flex items-center px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full"
+                        className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full"
                       >
                         {word}
                         <button
@@ -566,7 +566,7 @@ export default function SettingsPage() {
                         addFilteredWord(input.value);
                         input.value = '';
                       }}
-                      className="px-4 py-2 bg-red-600 text-white rounded-r-md hover:bg-red-700"
+                      className="px-4 py-2 text-white bg-red-600 rounded-r-md hover:bg-red-700"
                     >
                       Ajouter
                     </button>
@@ -657,7 +657,7 @@ export default function SettingsPage() {
               
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Thème
                   </label>
                   <select
@@ -672,7 +672,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block mb-2 text-sm font-medium text-gray-700">
                     Couleur principale
                   </label>
                   <input
@@ -727,7 +727,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Boutons d'action */}
-        <div className="flex items-center justify-between px-6 py-4 bg-gray-50 border-t border-gray-200">
+        <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50">
           <div className="text-sm text-gray-600">
             {saved && (
               <span className="text-green-600">✓ Paramètres sauvegardés</span>

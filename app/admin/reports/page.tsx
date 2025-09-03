@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Search, Filter, Eye, CheckCircle, XCircle, AlertTriangle, Clock, User, MessageSquare, Flag } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Search, Eye, CheckCircle, XCircle, AlertTriangle, Clock, User, MessageSquare, Flag } from 'lucide-react';
 
 interface Report {
   _id: string;
@@ -52,37 +52,7 @@ export default function ReportManagement() {
   const [showResolveModal, setShowResolveModal] = useState(false);
   const [resolution, setResolution] = useState('');
 
-  useEffect(() => {
-    fetchReports();
-  }, []);
-
-  useEffect(() => {
-    filterReports();
-  }, [reports, searchTerm, statusFilter, typeFilter, priorityFilter]);
-
-  const fetchReports = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/messages/report', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setReports(data.reports || []);
-      } else {
-        console.error('Erreur lors du chargement des signalements');
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterReports = () => {
+  const filterReports = useCallback(() => {
     let filtered = reports;
 
     // Filtre par recherche
@@ -112,6 +82,36 @@ export default function ReportManagement() {
     }
 
     setFilteredReports(filtered);
+  }, [reports, searchTerm, statusFilter, typeFilter, priorityFilter]);
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  useEffect(() => {
+    filterReports();
+  }, [filterReports]);
+
+  const fetchReports = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/messages/report', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setReports(data.reports || []);
+      } else {
+        console.error('Erreur lors du chargement des signalements');
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleResolveReport = async () => {
@@ -321,7 +321,7 @@ export default function ReportManagement() {
           {/* Filtre par statut */}
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as any)}
+            onChange={(e) => setStatusFilter(e.target.value as 'all' | 'pending' | 'resolved' | 'dismissed')}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">Tous les statuts</option>
@@ -333,7 +333,7 @@ export default function ReportManagement() {
           {/* Filtre par type */}
           <select
             value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value as any)}
+            onChange={(e) => setTypeFilter(e.target.value as 'all' | 'user' | 'message' | 'room')}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">Tous les types</option>
@@ -345,7 +345,7 @@ export default function ReportManagement() {
           {/* Filtre par priorité */}
           <select
             value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value as any)}
+            onChange={(e) => setPriorityFilter(e.target.value as 'all' | 'low' | 'medium' | 'high')}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">Toutes les priorités</option>

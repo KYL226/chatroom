@@ -104,7 +104,7 @@ export async function GET(req: Request) {
     let payload;
     try {
       payload = jwt.verify(token, JWT_SECRET) as { userId: string; role: string };
-    } catch (error) {
+    } catch {
       return NextResponse.json({ error: 'Token invalide.' }, { status: 401 });
     }
 
@@ -136,7 +136,7 @@ export async function PUT(req: Request) {
     let payload;
     try {
       payload = jwt.verify(token, JWT_SECRET) as { userId: string; role: string };
-    } catch (error) {
+    } catch {
       return NextResponse.json({ error: 'Token invalide.' }, { status: 401 });
     }
 

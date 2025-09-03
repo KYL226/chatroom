@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
+import { connectDB } from '@/lib/mongodb';
 import Room from '@/models/Room';
 import { verifyToken } from '@/lib/auth';
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Retirer l'utilisateur de la room
-    room.members = room.members.filter(memberId => memberId.toString() !== decoded.userId);
+  room.members = room.members.filter((memberId: string | number) => memberId.toString() !== decoded.userId);
     await room.save();
 
     return NextResponse.json({ message: 'Vous avez quitté la room avec succès' });

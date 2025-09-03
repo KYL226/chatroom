@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Search, Filter, MoreVertical, Edit, Trash2, Shield, UserCheck, UserX, Mail, Phone, Calendar } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Search, Edit, Trash2, UserCheck, UserX } from 'lucide-react';
 
 interface User {
   _id: string;
@@ -21,11 +21,7 @@ interface User {
   interests?: string[];
 }
 
-interface UserManagementProps {
-  user?: User;
-}
-
-export default function UserManagement({ user }: UserManagementProps) {
+export default function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,37 +34,7 @@ export default function UserManagement({ user }: UserManagementProps) {
   const [banReason, setBanReason] = useState('');
   const [banDuration, setBanDuration] = useState('7'); // days
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    filterUsers();
-  }, [users, searchTerm, roleFilter, statusFilter]);
-
-  const fetchUsers = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/users', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setUsers(data.users || []);
-      } else {
-        console.error('Erreur lors du chargement des utilisateurs');
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filterUsers = () => {
+  const filterUsers = useCallback(() => {
     let filtered = users;
 
     // Filtre par recherche
@@ -100,7 +66,37 @@ export default function UserManagement({ user }: UserManagementProps) {
     }
 
     setFilteredUsers(filtered);
+  }, [users, searchTerm, roleFilter, statusFilter]);
+
+  const fetchUsers = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/users', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data.users || []);
+      } else {
+        console.error('Erreur lors du chargement des utilisateurs');
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    filterUsers();
+  }, [users, searchTerm, roleFilter, statusFilter, filterUsers]);
 
   const handleBanUser = async () => {
     if (!selectedUser) return;
@@ -262,7 +258,7 @@ export default function UserManagement({ user }: UserManagementProps) {
           {/* Filtre par rôle */}
           <select
             value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value as any)}
+            onChange={(e) => setRoleFilter(e.target.value as 'all' | 'user' | 'moderator' | 'admin')}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">Tous les rôles</option>
@@ -274,7 +270,7 @@ export default function UserManagement({ user }: UserManagementProps) {
           {/* Filtre par statut */}
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as any)}
+            onChange={(e) => setStatusFilter(e.target.value as 'all' | 'online' | 'offline' | 'banned')}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">Tous les statuts</option>
@@ -306,7 +302,7 @@ export default function UserManagement({ user }: UserManagementProps) {
                   Statut
                 </th>
                 <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                  Date d'inscription
+                  Date d&apos;inscription
                 </th>
                 <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                   Dernière activité
@@ -322,6 +318,7 @@ export default function UserManagement({ user }: UserManagementProps) {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 w-10 h-10">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           className="w-10 h-10 rounded-full"
                           src={user.avatar || `https://ui-avatars.com/api/?name=${user.username}&background=random`}
@@ -404,11 +401,11 @@ export default function UserManagement({ user }: UserManagementProps) {
       {showUserModal && selectedUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="w-full max-w-md p-6 mx-4 bg-white rounded-lg">
-            <h3 className="mb-4 text-lg font-semibold">Détails de l'utilisateur</h3>
+            <h3 className="mb-4 text-lg font-semibold">Détails de l&apos;utilisateur</h3>
             
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Nom d'utilisateur</label>
+                <label className="block text-sm font-medium text-gray-700">Nom d&apos;utilisateur</label>
                 <p className="text-sm text-gray-900">{selectedUser.username}</p>
               </div>
               
@@ -421,7 +418,7 @@ export default function UserManagement({ user }: UserManagementProps) {
                 <label className="block text-sm font-medium text-gray-700">Rôle</label>
                 <select
                   value={selectedUser.role}
-                  onChange={(e) => handleChangeRole(selectedUser._id, e.target.value as any)}
+                  onChange={(e) => handleChangeRole(selectedUser._id, e.target.value as 'user' | 'moderator' | 'admin')}
                   className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="user">Utilisateur</option>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Users, MessageSquare, Hash, TrendingUp, TrendingDown, Activity, BarChart3, PieChart, Calendar, Clock, Eye, UserPlus, MessageCircle, AlertTriangle } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Users, MessageSquare, Hash, TrendingUp, Activity, BarChart3, UserPlus, AlertTriangle } from 'lucide-react';
 
 interface Statistics {
   users: {
@@ -53,11 +53,7 @@ export default function StatisticsPage() {
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d' | '90d'>('7d');
   const [selectedMetric, setSelectedMetric] = useState<'messages' | 'users' | 'activity'>('messages');
 
-  useEffect(() => {
-    fetchStatistics();
-  }, [timeRange]);
-
-  const fetchStatistics = async () => {
+  const fetchStatistics = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`/api/admin/statistics?range=${timeRange}`, {
@@ -81,7 +77,11 @@ export default function StatisticsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeRange]);
+
+  useEffect(() => {
+    fetchStatistics();
+  }, [timeRange, fetchStatistics]);
 
   const getDemoStats = (): Statistics => {
     return {
@@ -148,10 +148,7 @@ export default function StatisticsPage() {
     return num.toString();
   };
 
-  const getPercentageChange = (current: number, previous: number) => {
-    if (previous === 0) return 0;
-    return ((current - previous) / previous) * 100;
-  };
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
@@ -200,7 +197,7 @@ export default function StatisticsPage() {
             <label className="text-sm font-medium text-gray-700">Période:</label>
             <select
               value={timeRange}
-              onChange={(e) => setTimeRange(e.target.value as any)}
+              onChange={(e) => setTimeRange(e.target.value as '24h' | '7d' | '30d' | '90d')}
               className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="24h">24 heures</option>

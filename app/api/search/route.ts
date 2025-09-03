@@ -28,7 +28,11 @@ export async function GET(request: NextRequest) {
     }
 
     const searchRegex = new RegExp(query, 'i');
-    const results: any = {};
+    const results: { 
+      users?: Array<{ _id: string; name: string; email: string; avatar?: string; role: string }>; 
+      rooms?: Array<{ _id: string; name: string; description?: string; members: string[] }>; 
+      messages?: Array<{ _id: string; content: string; sender: string; createdAt: Date }> 
+    } = {};
 
     if (type === 'users' || type === 'all') {
       const users = await User.find({
@@ -48,7 +52,13 @@ export async function GET(request: NextRequest) {
       .limit(limit)
       .lean();
 
-      results.users = users;
+      results.users = users.map((user: { _id: unknown; name?: string; email?: string; avatar?: string; role?: string }) => ({
+        _id: String(user._id),
+        name: user.name || '',
+        email: user.email || '',
+        avatar: user.avatar,
+        role: user.role || 'user'
+      }));
     }
 
     if (type === 'rooms' || type === 'all') {
@@ -60,7 +70,12 @@ export async function GET(request: NextRequest) {
       .limit(limit)
       .lean();
 
-      results.rooms = rooms;
+      results.rooms = rooms.map((room: { _id: unknown; name?: string; description?: string; members?: string[] }) => ({
+        _id: String(room._id),
+        name: room.name || '',
+        description: room.description,
+        members: room.members || []
+      }));
     }
 
     return NextResponse.json({

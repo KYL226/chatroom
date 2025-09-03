@@ -233,6 +233,7 @@ export default function RightSidebar({ activeRoom, activeConversation }: RightSi
           <div className="grid grid-cols-2 gap-2">
             {media.map((url, index) => (
               <div key={index} className="relative overflow-hidden bg-gray-200 rounded aspect-square">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={url}
                   alt={`media-${index}`}

@@ -129,7 +129,7 @@ chatroom/
 ### Variables d'environnement requises
 
 ```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/chatroom
+MONGODB_URI= db mongo
 JWT_SECRET=your-very-long-and-secure-secret-key
 NEXTAUTH_URL=https://your-domain.com
 NEXTAUTH_SECRET=your-nextauth-secret-key

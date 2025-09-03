@@ -1,22 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import { useSocket } from '@/lib/useSocket';
-
-interface Room {
-  _id: string;
-  name: string;
-  description?: string;
-  members?: User[];
-}
-
-interface Conversation {
-  _id: string;
-  title: string;
-  participants: User[];
-}
 
 interface User {
   _id: string;
@@ -118,12 +105,12 @@ export default function ChatArea({
     }
   }, [socket, chatId, chatType]);
 
-  // Écouter les nouveaux messages Socket.io
+  // Écouter les événements Socket.io
   useEffect(() => {
     if (!socket) return;
-
-    const handleNewMessage = (message: Message) => {
-      setMessages(prev => [...prev, message]);
+    
+    const handleNewMessage = (newMessage: Message) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
     const handleMessageSent = (message: Message) => {
@@ -156,7 +143,7 @@ export default function ChatArea({
     };
   }, [socket]);
 
-  const fetchMessages = async (params?: { before?: string; append?: boolean }) => {
+  const fetchMessages = useCallback(async (params?: { before?: string; append?: boolean }) => {
     if (!chatId) return;
     const token = localStorage.getItem('token');
     const qs = new URLSearchParams();
@@ -190,7 +177,7 @@ export default function ChatArea({
         messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
       });
     }
-  };
+  }, [chatId, chatType]);
 
   // Charger initialement les messages récents
   useEffect(() => {
@@ -201,8 +188,7 @@ export default function ChatArea({
       return;
     }
     fetchMessages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatId, chatType]);
+  }, [chatId, chatType, fetchMessages]);
 
   // Scroll top -> charger anciens
   useEffect(() => {
@@ -217,7 +203,7 @@ export default function ChatArea({
 
     container.addEventListener('scroll', onScroll);
     return () => container.removeEventListener('scroll', onScroll);
-  }, [hasMore, cursor, chatId]);
+  }, [hasMore, cursor, chatId, fetchMessages]);
 
   // Charger les messages et infos du chat
   useEffect(() => {
@@ -270,7 +256,7 @@ export default function ChatArea({
     };
 
     fetchChatData();
-  }, [chatId, chatType]);
+  }, [chatId, chatType, fetchMessages]);
 
   const handleSendMessage = async (content: string, attachments?: Attachment[]) => {
     if (!chatId || (!content.trim() && (!attachments || attachments.length === 0))) return;
@@ -351,7 +337,7 @@ export default function ChatArea({
       {/* Liste des messages scrollable */}
       <div 
         ref={listContainerRef} 
-        className="flex-1 overflow-y-auto px-4"
+        className="flex-1 px-4 overflow-y-auto"
         style={{ scrollbarWidth: 'thin' /* optionnel pour Firefox */, WebkitOverflowScrolling: 'touch' }}
       >
         {loading ? (

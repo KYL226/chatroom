@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
+import { connectDB } from '@/lib/mongodb';
 import Conversation from '@/models/Conversation';
 import { verifyToken } from '@/lib/auth';
 

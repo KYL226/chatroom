@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Message from '@/models/Message';
 import { connectDB } from '@/lib/mongodb';
 import jwt from 'jsonwebtoken';
+import { MessageFilter } from '@/types/global';
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
@@ -18,7 +19,7 @@ export async function GET(req: Request) {
 
     await connectDB();
 
-    const filter: any = {};
+    const filter: MessageFilter = {};
     if (conversationId) filter.conversation = conversationId;
     if (roomId) filter.room = roomId;
     if (!conversationId && !roomId) {
@@ -45,7 +46,7 @@ export async function GET(req: Request) {
     const nextCursor = messages.length > 0 ? messages[0].createdAt : null; // le plus ancien de ce lot
 
     return NextResponse.json({ messages, hasMore, nextCursor });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: 'Erreur serveur.' }, { status: 500 });
   }
 }
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
     }
     const body = await req.json();
     const { conversationId, roomId, content } = body as { conversationId?: string; roomId?: string; content: string };
-    let { attachments } = body as { attachments?: Array<any> };
+    const { attachments } = body as { attachments?: Array<{ url: string; type: string; name: string; size?: number }> };
 
     if (!conversationId && !roomId) {
       return NextResponse.json({ error: 'conversationId ou roomId requis.' }, { status: 400 });
@@ -78,13 +79,13 @@ export async function POST(req: Request) {
       if (!room) {
         return NextResponse.json({ error: 'Salle non trouvée.' }, { status: 404 });
       }
-      if (!room.members.map((m: any) => m.toString()).includes(payload.userId)) {
+      if (!room.members.map((m: string) => m.toString()).includes(payload.userId)) {
         return NextResponse.json({ error: 'Vous devez être membre de la salle pour envoyer un message.' }, { status: 403 });
       }
     }
 
     // Normaliser les pièces jointes si présentes
-    const normalizedAttachments = (attachments || []).map((att: any) => ({
+    const normalizedAttachments = (attachments || []).map((att: { originalName?: string; name: string; url: string; type: string; size?: number }) => ({
       name: att.originalName || att.name,
       url: att.url,
       type: att.type || 'application/octet-stream',
