@@ -65,7 +65,7 @@ export default function ChatArea({
   const [typingUsers, setTypingUsers] = useState<string[]>([]);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { socket, isConnected } = useSocket();
+  const { socket, isConnected, connect } = useSocket();
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [cursor, setCursor] = useState<string | null>(null);
   const listContainerRef = useRef<HTMLDivElement>(null);
@@ -85,25 +85,22 @@ export default function ChatArea({
 
   // Connexion Socket.io
   useEffect(() => {
-    if (user._id && !isConnected) {
-      const token = localStorage.getItem('token');
-      if (token && socket) {
-        socket.auth = { token };
-        socket.connect();
-      }
+    const token = localStorage.getItem('token');
+    if (token && !isConnected) {
+      connect(token);
     }
-  }, [user._id, isConnected, socket]);
+  }, [isConnected, connect]);
 
-  // Rejoindre/quitter les salles Socket.io
+  // Rejoindre/quitter les salles Socket.io quand connecté
   useEffect(() => {
-    if (socket && chatId && chatType === 'room') {
+    if (!socket || !isConnected || !chatId) return;
+    if (chatType === 'room') {
       socket.emit('join_room', chatId);
-      
       return () => {
         socket.emit('leave_room', chatId);
       };
     }
-  }, [socket, chatId, chatType]);
+  }, [socket, isConnected, chatId, chatType]);
 
   // Écouter les événements Socket.io
   useEffect(() => {
@@ -359,7 +356,8 @@ export default function ChatArea({
           onSendMessage={handleSendMessage}
           roomId={chatType === 'room' ? chatId : undefined}
           conversationId={chatType === 'conversation' ? chatId : undefined}
-          currentUserId={user._id}
+          socket={socket}
+          isConnected={isConnected}
         />
       </div>
     </div>

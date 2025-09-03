@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Paperclip, Smile, X } from 'lucide-react';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
-import { useSocket } from '@/lib/useSocket';
+import type { Socket } from 'socket.io-client';
 
 interface Attachment {
   _id: string;
@@ -18,26 +18,26 @@ interface MessageInputProps {
   onSendMessage: (content: string, attachments?: Attachment[]) => void;
   roomId?: string;
   conversationId?: string;
-  currentUserId?: string;
+  socket?: Socket | null;
+  isConnected?: boolean;
 }
 
-export default function MessageInput({ 
-  onSendMessage, 
-  roomId, 
-  conversationId, 
-  currentUserId 
+export default function MessageInput({
+  onSendMessage,
+  roomId,
+  conversationId,
+  socket,
+  isConnected,
 }: MessageInputProps) {
   const [message, setMessage] = useState('');
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const emojiPickerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  
-  const { socket, isConnected } = useSocket();
 
   // Gérer les clics en dehors du picker d'emojis
   useEffect(() => {
@@ -64,31 +64,18 @@ export default function MessageInput({
     adjustTextAreaHeight();
   }, [message]);
 
-  // Connexion Socket.io
-  useEffect(() => {
-    if (currentUserId && !isConnected) {
-      const token = localStorage.getItem('token');
-      if (token && socket) {
-        socket.auth = { token };
-        socket.connect();
-      }
-    }
-  }, [currentUserId, isConnected, socket]);
-
   const handleSendMessage = async () => {
     if (!message.trim() && attachments.length === 0) return;
 
     try {
       if (isConnected && socket) {
-        // Envoyer via Socket.io
         socket.emit('send_message', {
           content: message,
           roomId,
           conversationId,
-          attachments
+          attachments,
         });
       } else {
-        // Fallback vers l'API REST
         onSendMessage(message, attachments);
       }
 
@@ -96,13 +83,11 @@ export default function MessageInput({
       setAttachments([]);
       setShowEmojiPicker(false);
 
-      // Arrêter l'indicateur de frappe
       if (socket && (roomId || conversationId)) {
         socket.emit('typing_stop', { roomId, conversationId });
       }
-
     } catch (error) {
-      console.error('Erreur lors de l\'envoi du message:', error);
+      console.error("Erreur lors de l'envoi du message:", error);
     }
   };
 
@@ -116,16 +101,15 @@ export default function MessageInput({
   const handleTyping = () => {
     if (socket && (roomId || conversationId)) {
       socket.emit('typing_start', { roomId, conversationId });
-      
-      // Arrêter l'indicateur de frappe après 2 secondes d'inactivité
+
       if (typingTimeout) {
         clearTimeout(typingTimeout);
       }
-      
+
       const timeout = setTimeout(() => {
         socket.emit('typing_stop', { roomId, conversationId });
       }, 2000);
-      
+
       setTypingTimeout(timeout);
     }
   };
@@ -142,7 +126,7 @@ export default function MessageInput({
         await uploadFile(file);
       }
     } catch (error) {
-      console.error('Erreur lors de l\'upload:', error);
+      console.error("Erreur lors de l'upload:", error);
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {
@@ -156,29 +140,29 @@ export default function MessageInput({
     formData.append('file', file);
 
     const token = localStorage.getItem('token');
-    
+
     const response = await fetch('/api/upload', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      body: formData
+      body: formData,
     });
 
     if (!response.ok) {
-      throw new Error('Erreur lors de l\'upload du fichier');
+      throw new Error("Erreur lors de l'upload du fichier");
     }
 
     const result = await response.json();
-    setAttachments(prev => [...prev, result.file]);
+    setAttachments((prev) => [...prev, result.file]);
   };
 
   const removeAttachment = (attachmentId: string) => {
-    setAttachments(prev => prev.filter(att => att._id !== attachmentId));
+    setAttachments((prev) => prev.filter((att) => att._id !== attachmentId));
   };
 
   const onEmojiClick = (emojiData: EmojiClickData) => {
-    setMessage(prev => prev + emojiData.emoji);
+    setMessage((prev) => prev + emojiData.emoji);
   };
 
   const formatFileSize = (bytes: number): string => {
@@ -195,7 +179,10 @@ export default function MessageInput({
       {attachments.length > 0 && (
         <div className="pr-1 mb-3 space-y-2 overflow-y-auto max-h-32">
           {attachments.map((attachment) => (
-            <div key={attachment._id} className="flex items-center justify-between p-2 rounded-lg bg-gray-50">
+            <div
+              key={attachment._id}
+              className="flex items-center justify-between p-2 rounded-lg bg-gray-50"
+            >
               <div className="flex items-center space-x-2">
                 <Paperclip className="w-4 h-4 text-gray-500" />
                 <span className="max-w-xs text-sm text-gray-700 truncate">
@@ -237,7 +224,7 @@ export default function MessageInput({
             <Smile className="w-5 h-5" />
           </button>
           {showEmojiPicker && (
-            <div 
+            <div
               ref={emojiPickerRef}
               className="absolute right-0 z-50 mb-2 bottom-full"
             >
@@ -276,9 +263,7 @@ export default function MessageInput({
 
       {/* Indicateur d'upload */}
       {isUploading && (
-        <div className="mt-2 text-sm text-gray-500">
-          Upload en cours...
-        </div>
+        <div className="mt-2 text-sm text-gray-500">Upload en cours...</div>
       )}
 
       {/* Input file caché */}
