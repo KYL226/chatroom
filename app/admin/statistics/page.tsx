@@ -187,11 +187,11 @@ export default function StatisticsPage() {
     <div className="p-6">
       <div className="mb-6">
         <h1 className="mb-2 text-2xl font-bold">Statistiques et Analytics</h1>
-        <p className="text-white/70">Vue d'ensemble de l'activité de la plateforme</p>
+        <p className="text-white/70">Vue d&apos;ensemble de l&apos;activité de la plateforme</p>
       </div>
 
       {/* Sélecteur de période */}
-      <div className="p-4 mb-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+      <div className="p-4 mb-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <label className="text-sm font-medium text-white/80">Période:</label>
@@ -245,7 +245,7 @@ export default function StatisticsPage() {
       {/* Métriques principales */}
       <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
         {/* Utilisateurs */}
-        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
             <div className="p-2 rounded-lg bg-white/10">
               <Users className="w-6 h-6 text-indigo-300" />
@@ -261,7 +261,7 @@ export default function StatisticsPage() {
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-white/10">
+          <div className="pt-4 mt-4 border-t border-white/10">
             <div className="flex justify-between text-sm">
               <span className="text-white/70">En ligne</span>
               <span className="font-medium">{stats.users.online}</span>
@@ -274,7 +274,7 @@ export default function StatisticsPage() {
         </div>
 
         {/* Messages */}
-        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
             <div className="p-2 rounded-lg bg-white/10">
               <MessageSquare className="w-6 h-6 text-emerald-300" />
@@ -285,12 +285,12 @@ export default function StatisticsPage() {
               <div className="flex items-center mt-1">
                 <TrendingUp className="w-4 h-4 text-emerald-300" />
                 <span className="ml-1 text-sm text-emerald-300">
-                  +{formatNumber(stats.messages.today)} aujourd'hui
+                  +{formatNumber(stats.messages.today)} aujourd&apos;hui
                 </span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-white/10">
+          <div className="pt-4 mt-4 border-t border-white/10">
             <div className="flex justify-between text-sm">
               <span className="text-white/70">Cette semaine</span>
               <span className="font-medium">{formatNumber(stats.messages.thisWeek)}</span>
@@ -303,7 +303,7 @@ export default function StatisticsPage() {
         </div>
 
         {/* Salles */}
-        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
             <div className="p-2 rounded-lg bg-white/10">
               <Hash className="w-6 h-6 text-purple-300" />
@@ -319,13 +319,13 @@ export default function StatisticsPage() {
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-white/10">
+          <div className="pt-4 mt-4 border-t border-white/10">
             <div className="flex justify-between text-sm">
               <span className="text-white/70">Actives</span>
               <span className="font-medium">{stats.rooms.active}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-white/70">Taux d'activité</span>
+              <span className="text-white/70">Taux d&apos;activité</span>
               <span className="font-medium">
                 {Math.round((stats.rooms.active / stats.rooms.total) * 100)}%
               </span>
@@ -334,7 +334,7 @@ export default function StatisticsPage() {
         </div>
 
         {/* Signalements */}
-        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
             <div className="p-2 rounded-lg bg-white/10">
               <BarChart3 className="w-6 h-6 text-rose-300" />
@@ -350,7 +350,7 @@ export default function StatisticsPage() {
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-white/10">
+          <div className="pt-4 mt-4 border-t border-white/10">
             <div className="flex justify-between text-sm">
               <span className="text-white/70">Résolus</span>
               <span className="font-medium">{stats.reports.resolved}</span>
@@ -366,9 +366,9 @@ export default function StatisticsPage() {
       {/* Graphiques et détails */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Graphique d'activité */}
-        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <h3 className="mb-4 text-lg font-semibold">Activité {timeRange === '24h' ? 'horaires' : 'quotidienne'}</h3>
-          <div className="h-64 flex items-end justify-between space-x-1">
+          <div className="flex items-end justify-between h-64 space-x-1">
             {selectedMetric === 'messages' && stats.activity.daily.map((day, index) => (
               <div key={index} className="flex-1 bg-indigo-500 rounded-t" style={{ height: `${(day.count / Math.max(...stats.activity.daily.map(d => d.count))) * 100}%` }}>
                 <div className="text-xs text-center text-white transform rotate-90 translate-x-2 translate-y-8">
@@ -377,7 +377,7 @@ export default function StatisticsPage() {
               </div>
             ))}
             {selectedMetric === 'users' && stats.activity.daily.map((day, index) => (
-              <div key={index} className="flex-1 bg-emerald-500 rounded-t" style={{ height: `${(day.count / Math.max(...stats.activity.daily.map(d => d.count))) * 100}%` }}>
+              <div key={index} className="flex-1 rounded-t bg-emerald-500" style={{ height: `${(day.count / Math.max(...stats.activity.daily.map(d => d.count))) * 100}%` }}>
                 <div className="text-xs text-center text-white transform rotate-90 translate-x-2 translate-y-8">
                   {formatNumber(day.count)}
                 </div>
@@ -399,7 +399,7 @@ export default function StatisticsPage() {
         </div>
 
         {/* Salles populaires */}
-        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <h3 className="mb-4 text-lg font-semibold">Salles les plus populaires</h3>
           <div className="space-y-3">
             {stats.rooms.popular.map((room, index) => (
@@ -423,7 +423,7 @@ export default function StatisticsPage() {
         </div>
 
         {/* Utilisateurs les plus actifs */}
-        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <h3 className="mb-4 text-lg font-semibold">Utilisateurs les plus actifs</h3>
           <div className="space-y-3">
             {stats.topUsers.map((user, index) => (
@@ -447,26 +447,26 @@ export default function StatisticsPage() {
         </div>
 
         {/* Statistiques détaillées */}
-        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+        <div className="p-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <h3 className="mb-4 text-lg font-semibold">Statistiques détaillées</h3>
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <span className="text-sm text-white/70">Nouveaux utilisateurs ce mois</span>
               <span className="text-sm font-medium">{stats.users.newThisMonth}</span>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <span className="text-sm text-white/70">Utilisateurs bannis</span>
               <span className="text-sm font-medium">{stats.users.banned}</span>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <span className="text-sm text-white/70">Messages ce mois</span>
               <span className="text-sm font-medium">{formatNumber(stats.messages.thisMonth)}</span>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <span className="text-sm text-white/70">Signalements résolus</span>
               <span className="text-sm font-medium">{stats.reports.resolved}</span>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <span className="text-sm text-white/70">Taux de résolution</span>
               <span className="text-sm font-medium">
                 {Math.round((stats.reports.resolved / stats.reports.total) * 100)}%
