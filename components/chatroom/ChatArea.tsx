@@ -286,29 +286,33 @@ export default function ChatArea({
 
   if (!chatId) {
     return (
-      <div className="flex items-center justify-center flex-1 bg-gray-50">
-        <div className="text-center">
-          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-full">
+      <div className="flex items-center justify-center flex-1">
+        <div className="absolute inset-0 pointer-events-none -z-10">
+          <div className="absolute -top-40 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+          <div className="absolute -bottom-40 right-1/3 h-[380px] w-[380px] rounded-full bg-gradient-to-tr from-emerald-500/20 via-cyan-500/20 to-blue-500/20 blur-3xl" />
+        </div>
+        <div className="px-8 py-10 text-center border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
+          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-white/10">
             <span className="text-2xl">💬</span>
           </div>
           <h3 className="mb-2 text-lg font-medium">Aucun chat sélectionné</h3>
-          <p className="text-sm text-gray-500">Sélectionnez une conversation ou une salle pour commencer</p>
+          <p className="text-sm text-white/70">Sélectionnez une conversation ou une salle pour commencer</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col flex-1 h-full bg-white">
+    <div className="flex flex-col flex-1 h-full">
       {/* En-tête du chat */}
-      <div className="sticky top-0 z-10 p-4 bg-white border-b border-gray-200">
+      <div className="sticky top-0 z-10 p-4 border-b border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">
+            <h2 className="text-lg font-semibold">
               {chatInfo?.name || 'Chat'}
             </h2>
             {chatType === 'room' && chatInfo?.members && (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-white/70">
                 {chatInfo.members.length} membre(s)
               </p>
             )}
@@ -317,7 +321,7 @@ export default function ChatArea({
           {/* Indicateur de connexion Socket.io */}
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-white/70">
               {isConnected ? 'En ligne' : 'Hors ligne'}
             </span>
           </div>
@@ -325,7 +329,7 @@ export default function ChatArea({
 
         {/* Indicateur de frappe */}
         {typingUsers.length > 0 && (
-          <div className="mt-2 text-sm italic text-gray-500">
+          <div className="mt-2 text-sm italic text-white/70">
             {typingUsers.join(', ')} {typingUsers.length === 1 ? 'tape' : 'tape(nt)'}...
           </div>
         )}
@@ -351,7 +355,7 @@ export default function ChatArea({
       </div>
 
       {/* Zone de saisie fixe en bas */}
-      <div className="sticky bottom-0 z-10 bg-white border-t border-gray-200">
+      <div className="sticky bottom-0 z-10 border-t border-white/10 bg-white/5 backdrop-blur-sm">
         <MessageInput
           onSendMessage={handleSendMessage}
           roomId={chatType === 'room' ? chatId : undefined}

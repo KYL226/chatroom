@@ -242,79 +242,79 @@ export default function ReportManagement() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="mb-2 text-2xl font-bold text-gray-900">Gestion des Signalements</h1>
-        <p className="text-gray-600">Traitez les signalements des utilisateurs et modérez le contenu</p>
+        <h1 className="mb-2 text-2xl font-bold">Gestion des Signalements</h1>
+        <p className="text-white/70">Traitez les signalements des utilisateurs et modérez le contenu</p>
       </div>
 
       {/* Statistiques */}
       <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-4">
-        <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <div className="p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
-            <div className="p-2 bg-yellow-100 rounded-lg">
-              <Clock className="w-6 h-6 text-yellow-600" />
+            <div className="p-2 rounded-lg bg-white/10">
+              <Clock className="w-6 h-6 text-yellow-300" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">En attente</p>
-              <p className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm font-medium text-white/70">En attente</p>
+              <p className="text-2xl font-semibold">
                 {reports.filter(r => r.status === 'pending').length}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <div className="p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
-            <div className="p-2 bg-red-100 rounded-lg">
-              <AlertTriangle className="w-6 h-6 text-red-600" />
+            <div className="p-2 rounded-lg bg-white/10">
+              <AlertTriangle className="w-6 h-6 text-rose-300" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Critiques</p>
-              <p className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm font-medium text-white/70">Critiques</p>
+              <p className="text-2xl font-semibold">
                 {reports.filter(r => r.priority === 'critical').length}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <div className="p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <CheckCircle className="w-6 h-6 text-green-600" />
+            <div className="p-2 rounded-lg bg-white/10">
+              <CheckCircle className="w-6 h-6 text-emerald-300" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Résolus</p>
-              <p className="text-2xl font-semibold text-gray-900">
+              <p className="text-sm font-medium text-white/70">Résolus</p>
+              <p className="text-2xl font-semibold">
                 {reports.filter(r => r.status === 'resolved').length}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="p-4 bg-white border rounded-lg shadow-sm">
+        <div className="p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Flag className="w-6 h-6 text-blue-600" />
+            <div className="p-2 rounded-lg bg-white/10">
+              <Flag className="w-6 h-6 text-indigo-300" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total</p>
-              <p className="text-2xl font-semibold text-gray-900">{reports.length}</p>
+              <p className="text-sm font-medium text-white/70">Total</p>
+              <p className="text-2xl font-semibold">{reports.length}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Filtres et recherche */}
-      <div className="p-4 mb-6 bg-white border rounded-lg shadow-sm">
+      <div className="p-4 mb-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
           {/* Recherche */}
           <div className="relative">
-            <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+            <Search className="absolute w-4 h-4 transform -translate-y-1/2 left-3 top-1/2 text-white/50" />
             <input
               type="text"
               placeholder="Rechercher un signalement..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full py-2 pl-10 pr-4 text-white placeholder-white/50 border border-white/15 rounded-lg bg-black/20 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
             />
           </div>
 
@@ -322,7 +322,7 @@ export default function ReportManagement() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as 'all' | 'pending' | 'resolved' | 'dismissed')}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 text-white border rounded-lg bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
           >
             <option value="all">Tous les statuts</option>
             <option value="pending">En attente</option>
@@ -334,7 +334,7 @@ export default function ReportManagement() {
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as 'all' | 'user' | 'message' | 'room')}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 text-white border rounded-lg bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
           >
             <option value="all">Tous les types</option>
             <option value="user">Utilisateur</option>
@@ -346,7 +346,7 @@ export default function ReportManagement() {
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value as 'all' | 'low' | 'medium' | 'high')}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 text-white border rounded-lg bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
           >
             <option value="all">Toutes les priorités</option>
             <option value="low">Faible</option>
@@ -356,67 +356,67 @@ export default function ReportManagement() {
           </select>
 
           {/* Statistiques */}
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-white/70">
             {filteredReports.length} signalement(s) trouvé(s)
           </div>
         </div>
       </div>
 
       {/* Liste des signalements */}
-      <div className="overflow-hidden bg-white border rounded-lg shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-white/10">
+            <thead className="bg-white/5">
               <tr>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Signalement
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Type
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Priorité
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Statut
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Date
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-right text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-right uppercase text-white/70">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-white/10">
               {filteredReports.map((report) => (
-                <tr key={report._id} className="hover:bg-gray-50">
+                <tr key={report._id} className="hover:bg-white/5">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 w-10 h-10">
-                        <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full">
+                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10">
                           {getTypeIcon(report.type)}
                         </div>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-medium">
                           Signalé par {report.reporter.username}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-white/70">
                           {report.reason}
                         </div>
                         {report.reportedUser && (
-                          <div className="text-xs text-gray-400">
+                          <div className="text-xs text-white/60">
                             Utilisateur: {report.reportedUser.username}
                           </div>
                         )}
                         {report.reportedMessage && (
-                          <div className="text-xs text-gray-400">
+                          <div className="text-xs text-white/60">
                             Message: {report.reportedMessage.content.substring(0, 50)}...
                           </div>
                         )}
                         {report.reportedRoom && (
-                          <div className="text-xs text-gray-400">
+                          <div className="text-xs text-white/60">
                             Salle: {report.reportedRoom.name}
                           </div>
                         )}
@@ -445,7 +445,7 @@ export default function ReportManagement() {
                       </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                  <td className="px-6 py-4 text-sm text-white/70 whitespace-nowrap">
                     {formatDate(report.createdAt)}
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
@@ -455,7 +455,7 @@ export default function ReportManagement() {
                           setSelectedReport(report);
                           setShowReportModal(true);
                         }}
-                        className="text-blue-600 hover:text-blue-900"
+                        className="text-indigo-300 hover:text-white"
                         title="Voir les détails"
                       >
                         <Eye className="w-4 h-4" />
@@ -468,7 +468,7 @@ export default function ReportManagement() {
                               setSelectedReport(report);
                               setShowResolveModal(true);
                             }}
-                            className="text-green-600 hover:text-green-900"
+                            className="text-emerald-300 hover:text-white"
                             title="Résoudre"
                           >
                             <CheckCircle className="w-4 h-4" />
@@ -476,7 +476,7 @@ export default function ReportManagement() {
                           
                           <button
                             onClick={() => handleDismissReport(report._id)}
-                            className="text-red-600 hover:text-red-900"
+                            className="text-rose-300 hover:text-white"
                             title="Rejeter"
                           >
                             <XCircle className="w-4 h-4" />
@@ -494,73 +494,73 @@ export default function ReportManagement() {
 
       {/* Modal de détails du signalement */}
       {showReportModal && selectedReport && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full max-w-2xl p-6 mx-4 bg-white rounded-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-2xl p-6 mx-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
             <h3 className="mb-4 text-lg font-semibold">Détails du Signalement</h3>
             
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Signalé par</label>
-                  <p className="text-sm text-gray-900">{selectedReport.reporter.username}</p>
-                  <p className="text-xs text-gray-500">{selectedReport.reporter.email}</p>
+                  <label className="block text-sm font-medium text-white/80">Signalé par</label>
+                  <p className="text-sm">{selectedReport.reporter.username}</p>
+                  <p className="text-xs text-white/70">{selectedReport.reporter.email}</p>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Date</label>
-                  <p className="text-sm text-gray-900">{formatDate(selectedReport.createdAt)}</p>
+                  <label className="block text-sm font-medium text-white/80">Date</label>
+                  <p className="text-sm">{formatDate(selectedReport.createdAt)}</p>
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700">Type</label>
-                <p className="text-sm text-gray-900">
+                <label className="block text-sm font-medium text-white/80">Type</label>
+                <p className="text-sm">
                   {selectedReport.type === 'user' ? 'Utilisateur' : 
                    selectedReport.type === 'message' ? 'Message' : 'Salle'}
                 </p>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700">Raison</label>
-                <p className="text-sm text-gray-900">{selectedReport.reason}</p>
+                <label className="block text-sm font-medium text-white/80">Raison</label>
+                <p className="text-sm">{selectedReport.reason}</p>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700">Description</label>
-                <p className="text-sm text-gray-900">{selectedReport.description}</p>
+                <label className="block text-sm font-medium text-white/80">Description</label>
+                <p className="text-sm">{selectedReport.description}</p>
               </div>
               
               {selectedReport.reportedUser && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Utilisateur signalé</label>
-                  <p className="text-sm text-gray-900">{selectedReport.reportedUser.username}</p>
-                  <p className="text-xs text-gray-500">{selectedReport.reportedUser.email}</p>
+                  <label className="block text-sm font-medium text-white/80">Utilisateur signalé</label>
+                  <p className="text-sm">{selectedReport.reportedUser.username}</p>
+                  <p className="text-xs text-white/70">{selectedReport.reportedUser.email}</p>
                 </div>
               )}
               
               {selectedReport.reportedMessage && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Message signalé</label>
-                  <div className="p-3 mt-1 text-sm bg-gray-100 rounded">
+                  <label className="block text-sm font-medium text-white/80">Message signalé</label>
+                  <div className="p-3 mt-1 text-sm rounded bg-white/10">
                     {selectedReport.reportedMessage.content}
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Salle: {selectedReport.reportedMessage.room}</p>
+                  <p className="mt-1 text-xs text-white/70">Salle: {selectedReport.reportedMessage.room}</p>
                 </div>
               )}
               
               {selectedReport.reportedRoom && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Salle signalée</label>
-                  <p className="text-sm text-gray-900">{selectedReport.reportedRoom.name}</p>
+                  <label className="block text-sm font-medium text-white/80">Salle signalée</label>
+                  <p className="text-sm">{selectedReport.reportedRoom.name}</p>
                 </div>
               )}
               
               {selectedReport.resolution && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Résolution</label>
-                  <p className="text-sm text-gray-900">{selectedReport.resolution}</p>
+                  <label className="block text-sm font-medium text-white/80">Résolution</label>
+                  <p className="text-sm">{selectedReport.resolution}</p>
                   {selectedReport.resolvedBy && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="mt-1 text-xs text-white/70">
                       Résolu par {selectedReport.resolvedBy.username} le {selectedReport.resolvedAt && formatDate(selectedReport.resolvedAt)}
                     </p>
                   )}
@@ -571,7 +571,7 @@ export default function ReportManagement() {
             <div className="flex justify-end mt-6 space-x-3">
               <button
                 onClick={() => setShowReportModal(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 text-sm font-medium rounded-md bg-white/10 hover:bg-white/20"
               >
                 Fermer
               </button>
@@ -582,17 +582,17 @@ export default function ReportManagement() {
 
       {/* Modal de résolution */}
       {showResolveModal && selectedReport && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full max-w-md p-6 mx-4 bg-white rounded-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-md p-6 mx-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
             <h3 className="mb-4 text-lg font-semibold">Résoudre le Signalement</h3>
             
             <div className="space-y-4">
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">Action de résolution</label>
+                <label className="block mb-2 text-sm font-medium text-white/80">Action de résolution</label>
                 <textarea
                   value={resolution}
                   onChange={(e) => setResolution(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 text-white border rounded-md shadow-sm bg-black/20 border-white/15 focus:outline-none focus:ring-indigo-500/60 focus:border-transparent"
                   rows={4}
                   placeholder="Décrivez l&apos;action prise pour résoudre ce signalement..."
                 />
@@ -602,13 +602,13 @@ export default function ReportManagement() {
             <div className="flex justify-end mt-6 space-x-3">
               <button
                 onClick={() => setShowResolveModal(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 text-sm font-medium rounded-md bg-white/10 hover:bg-white/20"
               >
                 Annuler
               </button>
               <button
                 onClick={handleResolveReport}
-                className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700"
+                className="px-4 py-2 text-sm font-medium text-white rounded-md bg-emerald-600 hover:bg-emerald-500"
               >
                 Résoudre
               </button>

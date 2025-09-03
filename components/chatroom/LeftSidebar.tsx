@@ -322,9 +322,9 @@ useEffect(() => {
   };
 
   return (
-    <div className="flex flex-col border-r border-gray-200 w-80 bg-gray-50">
+    <div className="flex flex-col w-80 border-r border-white/10 bg-transparent">
       {/* En-tête avec profil utilisateur */}
-      <div className="p-4 border-b border-gray-200 user-menu-container">
+      <div className="p-4 border-b border-white/10 user-menu-container bg-white/5 backdrop-blur-sm">
         <div className="relative">
           <button 
             onClick={() => setShowUserMenu(!showUserMenu)}
@@ -347,18 +347,18 @@ useEffect(() => {
 
           {/* Menu déroulant */}
           {showUserMenu && (
-            <div className="absolute left-0 right-0 z-50 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg top-full">
+            <div className="absolute left-0 right-0 z-50 mt-1 bg-white/90 backdrop-blur-md border border-white/20 rounded-lg shadow-xl top-full">
               <div className="py-1">
                 <button
                   onClick={handleProfileClick}
-                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100"
+                  className="flex items-center w-full px-4 py-2 text-sm text-gray-800 transition-colors hover:bg-white/60"
                 >
                   <User className="w-4 h-4 mr-3" />
                   Mon profil
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center w-full px-4 py-2 text-sm text-red-600 transition-colors hover:bg-red-50"
+                  className="flex items-center w-full px-4 py-2 text-sm text-red-600 transition-colors hover:bg-red-100/70"
                 >
                   <LogOut className="w-4 h-4 mr-3" />
                   Déconnexion
@@ -379,11 +379,11 @@ useEffect(() => {
         {/* Liens statiques */}
         <div className="px-4 py-2">
           <div className="space-y-1">
-            <a href="#" className="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-200">
+            <a href="#" className="flex items-center px-2 py-2 text-sm font-medium text-white/80 rounded-md hover:bg-white/10">
               <FileText className="w-4 h-4 mr-3" />
               Documentation
             </a>
-            <a href="http://localhost:3000/salles" className="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-200">
+            <a href="http://localhost:3000/salles" className="flex items-center px-2 py-2 text-sm font-medium text-white/80 rounded-md hover:bg-white/10">
               <Users className="w-4 h-4 mr-3" />
               Explorer les salles
             </a>
@@ -393,18 +393,18 @@ useEffect(() => {
         {/* Salles de chat */}
         <div className="px-4 py-2">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
+            <h3 className="text-xs font-semibold tracking-wider text-white/60 uppercase">
               Salles de chat
             </h3>
-            <button className="p-1 rounded hover:bg-gray-200">
-              <Plus className="w-4 h-4 text-gray-600" />
+            <button className="p-1 rounded hover:bg-white/10">
+              <Plus className="w-4 h-4 text-white/80" />
             </button>
           </div>
           
           {roomsLoading ? (
             <div className="space-y-2">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                <div key={i} className="h-8 rounded bg-white/10 animate-pulse"></div>
               ))}
             </div>
           ) : (
@@ -418,19 +418,19 @@ useEffect(() => {
                     onClick={() => onRoomSelect(room._id)}
                     className={`flex items-center flex-1 px-2 py-2 text-sm rounded-md transition-colors ${
                       activeRoom === room._id
-                        ? 'bg-purple-100 text-purple-700'
-                        : 'text-gray-600 hover:bg-gray-200'
+                        ? 'bg-white/15 text-white'
+                        : 'text-white/80 hover:bg-white/10'
                     }`}
                   >
                     <Hash className="w-4 h-4 mr-3" />
                     <div className="flex-1 text-left">
                       <div className="font-medium">{room.name}</div>
                       {room.description && (
-                        <div className="text-xs text-gray-500 truncate">{room.description}</div>
+                        <div className="text-xs text-white/60 truncate">{room.description}</div>
                       )}
                     </div>
                     {room.members && (
-                      <div className="text-xs text-gray-400">{room.members.length}</div>
+                      <div className="text-xs text-white/60">{room.members.length}</div>
                     )}
                   </button>
                   
@@ -453,18 +453,18 @@ useEffect(() => {
         {/* Conversations privées */}
         <div className="px-4 py-2">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
+            <h3 className="text-xs font-semibold tracking-wider text-white/60 uppercase">
               Conversations privées
             </h3>
-            <button className="p-1 rounded hover:bg-gray-200">
-              <Plus className="w-4 h-4 text-gray-600" />
+            <button className="p-1 rounded hover:bg-white/10">
+              <Plus className="w-4 h-4 text-white/80" />
             </button>
           </div>
           
           {conversationsLoading ? (
             <div className="space-y-2">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-12 bg-gray-200 rounded animate-pulse"></div>
+                <div key={i} className="h-12 rounded bg-white/10 animate-pulse"></div>
               ))}
             </div>
           ) : (
@@ -475,22 +475,22 @@ useEffect(() => {
                   onClick={() => onConversationSelect(conversation._id)}
                   className={`w-full flex items-center px-2 py-2 text-sm rounded-md transition-colors ${
                     activeConversation === conversation._id
-                      ? 'bg-purple-100 text-purple-700'
-                      : 'text-gray-600 hover:bg-gray-200'
+                      ? 'bg-white/15 text-white'
+                      : 'text-white/80 hover:bg-white/10'
                   }`}
                 >
                   <MessageCircle className="w-4 h-4 mr-3" />
                   <div className="flex-1 text-left">
                     <div className="font-medium">{getConversationName(conversation)}</div>
                     {conversation.lastMessage && (
-                      <div className="text-xs text-gray-500 truncate">
+                      <div className="text-xs text-white/60 truncate">
                         {conversation.lastMessage.sender.name}: {conversation.lastMessage.content}
                       </div>
                     )}
                   </div>
                   <div className="flex flex-col items-end space-y-1">
                     {conversation.lastMessage && (
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-white/60">
                         {formatTime(conversation.lastMessage.createdAt)}
                       </div>
                     )}
@@ -516,9 +516,9 @@ useEffect(() => {
             <div className="space-y-2">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+                  <div className="w-8 h-8 rounded-full animate-pulse bg-white/10"></div>
                   <div className="flex-1">
-                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-4 rounded animate-pulse bg-white/10"></div>
                   </div>
                 </div>
               ))}
@@ -532,7 +532,7 @@ useEffect(() => {
                 >
                   <button
                     onClick={() => createPrivateConversation(contact._id)}
-                    className="flex items-center flex-1 px-2 py-2 text-sm transition-colors rounded-md hover:bg-gray-200"
+                    className="flex items-center flex-1 px-2 py-2 text-sm transition-colors rounded-md hover:bg-white/10"
                   >
                     <div className="relative">
                       <Avatar
@@ -547,8 +547,8 @@ useEffect(() => {
                       }`}></div>
                     </div>
                     <div className="flex-1 ml-3 text-left">
-                      <div className="font-medium text-gray-900">{contact.name}</div>
-                      <div className="text-xs text-gray-500">{contact.email}</div>
+                      <div className="font-medium text-white">{contact.name}</div>
+                      <div className="text-xs text-white/60">{contact.email}</div>
                     </div>
                   </button>
                   

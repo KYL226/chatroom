@@ -40,9 +40,13 @@ export default function ChatLayout({ user }: ChatLayoutProps) {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className="flex h-full overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none -z-10">
+        <div className="absolute -top-40 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+        <div className="absolute -bottom-40 right-1/3 h-[380px] w-[380px] rounded-full bg-gradient-to-tr from-emerald-500/20 via-cyan-500/20 to-blue-500/20 blur-3xl" />
+      </div>
       {/* Sidebar gauche */}
-      <div className="flex flex-col bg-white border-r border-gray-200 w-80 overflow-y-auto">
+      <div className="flex flex-col w-80 overflow-y-auto border-r border-white/10 bg-white/5 backdrop-blur-sm">
         <LeftSidebar 
           user={user}
           activeRoom={activeRoom}
@@ -62,7 +66,7 @@ export default function ChatLayout({ user }: ChatLayoutProps) {
       </div>
 
       {/* Sidebar droite */}
-      <div className="bg-white border-l border-gray-200 w-80 overflow-y-auto">
+      <div className="w-80 overflow-y-auto border-l border-white/10 bg-white/5 backdrop-blur-sm">
         <RightSidebar 
           activeRoom={activeRoom}
           activeConversation={activeConversation}

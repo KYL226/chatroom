@@ -186,19 +186,19 @@ export default function StatisticsPage() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="mb-2 text-2xl font-bold text-gray-900">Statistiques et Analytics</h1>
-        <p className="text-gray-600">Vue d&apos;ensemble de l&apos;activité de la plateforme</p>
+        <h1 className="mb-2 text-2xl font-bold">Statistiques et Analytics</h1>
+        <p className="text-white/70">Vue d'ensemble de l'activité de la plateforme</p>
       </div>
 
       {/* Sélecteur de période */}
-      <div className="p-4 mb-6 bg-white border rounded-lg shadow-sm">
+      <div className="p-4 mb-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <label className="text-sm font-medium text-gray-700">Période:</label>
+            <label className="text-sm font-medium text-white/80">Période:</label>
             <select
               value={timeRange}
               onChange={(e) => setTimeRange(e.target.value as '24h' | '7d' | '30d' | '90d')}
-              className="px-3 py-1 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-3 py-1 text-sm text-white border rounded-md bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
             >
               <option value="24h">24 heures</option>
               <option value="7d">7 jours</option>
@@ -212,8 +212,8 @@ export default function StatisticsPage() {
               onClick={() => setSelectedMetric('messages')}
               className={`px-3 py-1 text-sm rounded-md ${
                 selectedMetric === 'messages' 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-white/15 text-white' 
+                  : 'text-white/80 hover:bg-white/10'
               }`}
             >
               Messages
@@ -222,8 +222,8 @@ export default function StatisticsPage() {
               onClick={() => setSelectedMetric('users')}
               className={`px-3 py-1 text-sm rounded-md ${
                 selectedMetric === 'users' 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-white/15 text-white' 
+                  : 'text-white/80 hover:bg-white/10'
               }`}
             >
               Utilisateurs
@@ -232,8 +232,8 @@ export default function StatisticsPage() {
               onClick={() => setSelectedMetric('activity')}
               className={`px-3 py-1 text-sm rounded-md ${
                 selectedMetric === 'activity' 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-white/15 text-white' 
+                  : 'text-white/80 hover:bg-white/10'
               }`}
             >
               Activité
@@ -245,87 +245,87 @@ export default function StatisticsPage() {
       {/* Métriques principales */}
       <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
         {/* Utilisateurs */}
-        <div className="p-6 bg-white border rounded-lg shadow-sm">
+        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Users className="w-6 h-6 text-blue-600" />
+            <div className="p-2 rounded-lg bg-white/10">
+              <Users className="w-6 h-6 text-indigo-300" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Utilisateurs</p>
-              <p className="text-2xl font-semibold text-gray-900">{formatNumber(stats.users.total)}</p>
+              <p className="text-sm font-medium text-white/70">Utilisateurs</p>
+              <p className="text-2xl font-semibold">{formatNumber(stats.users.total)}</p>
               <div className="flex items-center mt-1">
-                <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className="ml-1 text-sm text-green-600">
+                <TrendingUp className="w-4 h-4 text-emerald-300" />
+                <span className="ml-1 text-sm text-emerald-300">
                   +{stats.users.newThisWeek} cette semaine
                 </span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-white/10">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">En ligne</span>
+              <span className="text-white/70">En ligne</span>
               <span className="font-medium">{stats.users.online}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Actifs</span>
+              <span className="text-white/70">Actifs</span>
               <span className="font-medium">{stats.users.active}</span>
             </div>
           </div>
         </div>
 
         {/* Messages */}
-        <div className="p-6 bg-white border rounded-lg shadow-sm">
+        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <MessageSquare className="w-6 h-6 text-green-600" />
+            <div className="p-2 rounded-lg bg-white/10">
+              <MessageSquare className="w-6 h-6 text-emerald-300" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Messages</p>
-              <p className="text-2xl font-semibold text-gray-900">{formatNumber(stats.messages.total)}</p>
+              <p className="text-sm font-medium text-white/70">Messages</p>
+              <p className="text-2xl font-semibold">{formatNumber(stats.messages.total)}</p>
               <div className="flex items-center mt-1">
-                <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className="ml-1 text-sm text-green-600">
-                  +{formatNumber(stats.messages.today)} aujourd&apos;hui
+                <TrendingUp className="w-4 h-4 text-emerald-300" />
+                <span className="ml-1 text-sm text-emerald-300">
+                  +{formatNumber(stats.messages.today)} aujourd'hui
                 </span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-white/10">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Cette semaine</span>
+              <span className="text-white/70">Cette semaine</span>
               <span className="font-medium">{formatNumber(stats.messages.thisWeek)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Moyenne/utilisateur</span>
+              <span className="text-white/70">Moyenne/utilisateur</span>
               <span className="font-medium">{stats.messages.averagePerUser}</span>
             </div>
           </div>
         </div>
 
         {/* Salles */}
-        <div className="p-6 bg-white border rounded-lg shadow-sm">
+        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
-            <div className="p-2 bg-purple-100 rounded-lg">
-              <Hash className="w-6 h-6 text-purple-600" />
+            <div className="p-2 rounded-lg bg-white/10">
+              <Hash className="w-6 h-6 text-purple-300" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Salles</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats.rooms.total}</p>
+              <p className="text-sm font-medium text-white/70">Salles</p>
+              <p className="text-2xl font-semibold">{stats.rooms.total}</p>
               <div className="flex items-center mt-1">
-                <Activity className="w-4 h-4 text-purple-500" />
-                <span className="ml-1 text-sm text-purple-600">
+                <Activity className="w-4 h-4 text-purple-300" />
+                <span className="ml-1 text-sm text-purple-300">
                   {stats.rooms.active} actives
                 </span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-white/10">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Actives</span>
+              <span className="text-white/70">Actives</span>
               <span className="font-medium">{stats.rooms.active}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Taux d&apos;activité</span>
+              <span className="text-white/70">Taux d'activité</span>
               <span className="font-medium">
                 {Math.round((stats.rooms.active / stats.rooms.total) * 100)}%
               </span>
@@ -334,29 +334,29 @@ export default function StatisticsPage() {
         </div>
 
         {/* Signalements */}
-        <div className="p-6 bg-white border rounded-lg shadow-sm">
+        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
           <div className="flex items-center">
-            <div className="p-2 bg-red-100 rounded-lg">
-              <BarChart3 className="w-6 h-6 text-red-600" />
+            <div className="p-2 rounded-lg bg-white/10">
+              <BarChart3 className="w-6 h-6 text-rose-300" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Signalements</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats.reports.total}</p>
+              <p className="text-sm font-medium text-white/70">Signalements</p>
+              <p className="text-2xl font-semibold">{stats.reports.total}</p>
               <div className="flex items-center mt-1">
-                <AlertTriangle className="w-4 h-4 text-red-500" />
-                <span className="ml-1 text-sm text-red-600">
+                <AlertTriangle className="w-4 h-4 text-rose-300" />
+                <span className="ml-1 text-sm text-rose-300">
                   {stats.reports.pending} en attente
                 </span>
               </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-gray-200">
+          <div className="mt-4 pt-4 border-t border-white/10">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Résolus</span>
+              <span className="text-white/70">Résolus</span>
               <span className="font-medium">{stats.reports.resolved}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Critiques</span>
+              <span className="text-white/70">Critiques</span>
               <span className="font-medium">{stats.reports.critical}</span>
             </div>
           </div>
@@ -366,18 +366,18 @@ export default function StatisticsPage() {
       {/* Graphiques et détails */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Graphique d'activité */}
-        <div className="p-6 bg-white border rounded-lg shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Activité {timeRange === '24h' ? 'horaires' : 'quotidienne'}</h3>
+        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+          <h3 className="mb-4 text-lg font-semibold">Activité {timeRange === '24h' ? 'horaires' : 'quotidienne'}</h3>
           <div className="h-64 flex items-end justify-between space-x-1">
             {selectedMetric === 'messages' && stats.activity.daily.map((day, index) => (
-              <div key={index} className="flex-1 bg-blue-500 rounded-t" style={{ height: `${(day.count / Math.max(...stats.activity.daily.map(d => d.count))) * 100}%` }}>
+              <div key={index} className="flex-1 bg-indigo-500 rounded-t" style={{ height: `${(day.count / Math.max(...stats.activity.daily.map(d => d.count))) * 100}%` }}>
                 <div className="text-xs text-center text-white transform rotate-90 translate-x-2 translate-y-8">
                   {formatNumber(day.count)}
                 </div>
               </div>
             ))}
             {selectedMetric === 'users' && stats.activity.daily.map((day, index) => (
-              <div key={index} className="flex-1 bg-green-500 rounded-t" style={{ height: `${(day.count / Math.max(...stats.activity.daily.map(d => d.count))) * 100}%` }}>
+              <div key={index} className="flex-1 bg-emerald-500 rounded-t" style={{ height: `${(day.count / Math.max(...stats.activity.daily.map(d => d.count))) * 100}%` }}>
                 <div className="text-xs text-center text-white transform rotate-90 translate-x-2 translate-y-8">
                   {formatNumber(day.count)}
                 </div>
@@ -391,7 +391,7 @@ export default function StatisticsPage() {
               </div>
             ))}
           </div>
-          <div className="flex justify-between mt-2 text-xs text-gray-500">
+          <div className="flex justify-between mt-2 text-xs text-white/70">
             {stats.activity.daily.map((day, index) => (
               <span key={index}>{formatDate(day.date)}</span>
             ))}
@@ -399,23 +399,23 @@ export default function StatisticsPage() {
         </div>
 
         {/* Salles populaires */}
-        <div className="p-6 bg-white border rounded-lg shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Salles les plus populaires</h3>
+        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+          <h3 className="mb-4 text-lg font-semibold">Salles les plus populaires</h3>
           <div className="space-y-3">
             {stats.rooms.popular.map((room, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-white/5">
                 <div className="flex items-center">
-                  <div className="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full">
-                    <Hash className="w-4 h-4 text-blue-600" />
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10">
+                    <Hash className="w-4 h-4 text-indigo-300" />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">{room.name}</p>
-                    <p className="text-xs text-gray-500">{room.userCount} utilisateurs</p>
+                    <p className="text-sm font-medium">{room.name}</p>
+                    <p className="text-xs text-white/70">{room.userCount} utilisateurs</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium text-gray-900">{formatNumber(room.messageCount)}</p>
-                  <p className="text-xs text-gray-500">messages</p>
+                  <p className="text-sm font-medium">{formatNumber(room.messageCount)}</p>
+                  <p className="text-xs text-white/70">messages</p>
                 </div>
               </div>
             ))}
@@ -423,23 +423,23 @@ export default function StatisticsPage() {
         </div>
 
         {/* Utilisateurs les plus actifs */}
-        <div className="p-6 bg-white border rounded-lg shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Utilisateurs les plus actifs</h3>
+        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+          <h3 className="mb-4 text-lg font-semibold">Utilisateurs les plus actifs</h3>
           <div className="space-y-3">
             {stats.topUsers.map((user, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-white/5">
                 <div className="flex items-center">
-                  <div className="flex items-center justify-center w-8 h-8 bg-green-100 rounded-full">
-                    <UserPlus className="w-4 h-4 text-green-600" />
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10">
+                    <UserPlus className="w-4 h-4 text-emerald-300" />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">{user.username}</p>
-                    <p className="text-xs text-gray-500">Dernière activité: {formatDate(user.lastSeen)}</p>
+                    <p className="text-sm font-medium">{user.username}</p>
+                    <p className="text-xs text-white/70">Dernière activité: {formatDate(user.lastSeen)}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium text-gray-900">{formatNumber(user.messageCount)}</p>
-                  <p className="text-xs text-gray-500">messages</p>
+                  <p className="text-sm font-medium">{formatNumber(user.messageCount)}</p>
+                  <p className="text-xs text-white/70">messages</p>
                 </div>
               </div>
             ))}
@@ -447,28 +447,28 @@ export default function StatisticsPage() {
         </div>
 
         {/* Statistiques détaillées */}
-        <div className="p-6 bg-white border rounded-lg shadow-sm">
-          <h3 className="mb-4 text-lg font-semibold text-gray-900">Statistiques détaillées</h3>
+        <div className="p-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
+          <h3 className="mb-4 text-lg font-semibold">Statistiques détaillées</h3>
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Nouveaux utilisateurs ce mois</span>
-              <span className="text-sm font-medium text-gray-900">{stats.users.newThisMonth}</span>
+              <span className="text-sm text-white/70">Nouveaux utilisateurs ce mois</span>
+              <span className="text-sm font-medium">{stats.users.newThisMonth}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Utilisateurs bannis</span>
-              <span className="text-sm font-medium text-gray-900">{stats.users.banned}</span>
+              <span className="text-sm text-white/70">Utilisateurs bannis</span>
+              <span className="text-sm font-medium">{stats.users.banned}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Messages ce mois</span>
-              <span className="text-sm font-medium text-gray-900">{formatNumber(stats.messages.thisMonth)}</span>
+              <span className="text-sm text-white/70">Messages ce mois</span>
+              <span className="text-sm font-medium">{formatNumber(stats.messages.thisMonth)}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Signalements résolus</span>
-              <span className="text-sm font-medium text-gray-900">{stats.reports.resolved}</span>
+              <span className="text-sm text-white/70">Signalements résolus</span>
+              <span className="text-sm font-medium">{stats.reports.resolved}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Taux de résolution</span>
-              <span className="text-sm font-medium text-gray-900">
+              <span className="text-sm text-white/70">Taux de résolution</span>
+              <span className="text-sm font-medium">
                 {Math.round((stats.reports.resolved / stats.reports.total) * 100)}%
               </span>
             </div>

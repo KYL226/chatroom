@@ -133,21 +133,21 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
   }
 
   return (
-    <div className="w-64 min-h-screen bg-white border-r border-gray-200 shadow-lg">
+    <div className="w-64 min-h-screen border-r border-white/10 bg-white/5 backdrop-blur-sm">
       {/* Header avec menu utilisateur */}
-      <div className="p-6 border-b border-gray-200 admin-user-menu-container">
+      <div className="p-6 border-b border-white/10 admin-user-menu-container">
         <div className="relative">
           <button 
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center justify-between w-full p-2 transition-colors rounded-lg hover:bg-gray-100"
+            className="flex items-center justify-between w-full p-2 transition-colors rounded-lg hover:bg-white/10"
           >
             <div className="flex items-center space-x-3">
               <div className="flex items-center justify-center w-10 h-10 bg-blue-500 rounded-full">
                 <Shield className="w-5 h-5 text-white" />
               </div>
               <div className="text-left">
-                <h2 className="text-lg font-semibold text-gray-900">Administration</h2>
-                <p className="text-sm text-gray-500 capitalize">{user?.role}</p>
+                <h2 className="text-lg font-semibold">Administration</h2>
+                <p className="text-sm text-white/70 capitalize">{user?.role}</p>
               </div>
             </div>
             <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
@@ -155,8 +155,8 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
 
           {/* Menu déroulant utilisateur */}
           {showUserMenu && (
-            <div className="absolute left-0 right-0 z-50 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg top-full">
-              <div className="p-3 border-b border-gray-100">
+            <div className="absolute left-0 right-0 z-50 mt-1 bg-white/90 backdrop-blur-md border border-white/20 rounded-lg shadow-xl top-full">
+              <div className="p-3 border-b border-white/20">
                 <div className="flex items-center space-x-3">
                   <Avatar
                     src={user?.avatar}
@@ -165,22 +165,22 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
                     fallback={getInitials(user?.name || 'A')}
                   />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                    <p className="text-xs text-gray-500">{user?.email}</p>
+                    <p className="text-sm font-medium">{user?.name}</p>
+                    <p className="text-xs text-white/70">{user?.email}</p>
                   </div>
                 </div>
               </div>
               <div className="py-1">
                 <button
                   onClick={handleProfileClick}
-                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100"
+                  className="flex items-center w-full px-4 py-2 text-sm transition-colors hover:bg-white/60"
                 >
                   <User className="w-4 h-4 mr-3" />
                   Mon profil
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center w-full px-4 py-2 text-sm text-red-600 transition-colors hover:bg-red-50"
+                  className="flex items-center w-full px-4 py-2 text-sm text-red-600 transition-colors hover:bg-red-100/70"
                 >
                   <LogOut className="w-4 h-4 mr-3" />
                   Déconnexion
@@ -207,8 +207,8 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
                       onClick={() => toggleMenu(item.id)}
                       className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                         active
-                          ? "bg-blue-100 text-blue-700"
-                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                          ? "bg-white/15 text-white"
+                          : "text-white/80 hover:bg-white/10"
                       }`}
                     >
                       <div className="flex items-center space-x-2">
@@ -225,8 +225,8 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
                               href={child.href}
                               className={`block px-3 py-2 text-sm rounded-md transition-colors ${
                                 isActive(child.href)
-                                  ? "bg-blue-50 text-blue-600"
-                                  : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                                  ? "bg-white/10 text-white"
+                                  : "text-white/70 hover:bg-white/10"
                               }`}
                             >
                               {child.label}
@@ -241,8 +241,8 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
                     href={item.href}
                     className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       active
-                        ? "bg-blue-100 text-blue-700"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        ? "bg-white/15 text-white"
+                        : "text-white/80 hover:bg-white/10"
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -256,10 +256,10 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
       </nav>
 
       {/* Footer */}
-      <div className="absolute bottom-0 w-64 p-4 border-t border-gray-200">
+      <div className="absolute bottom-0 w-64 p-4 border-t border-white/10">
         <Link
           href="/chatroom"
-          className="flex items-center px-3 py-2 space-x-2 text-sm text-gray-600 transition-colors rounded-md hover:text-gray-900 hover:bg-gray-50"
+          className="flex items-center px-3 py-2 space-x-2 text-sm text-white/80 transition-colors rounded-md hover:bg-white/10"
         >
           <Home className="w-4 h-4" />
           <span>Retour au chat</span>

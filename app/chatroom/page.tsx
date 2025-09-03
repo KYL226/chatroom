@@ -65,10 +65,14 @@ export default function ChatroomPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-center">
-          <div className="w-12 h-12 mx-auto mb-4 border-b-2 border-blue-500 rounded-full animate-spin"></div>
-          <p className="text-gray-600">Chargement...</p>
+      <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none -z-10">
+          <div className="absolute -top-40 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+          <div className="absolute -bottom-40 right-1/3 h-[380px] w-[380px] rounded-full bg-gradient-to-tr from-emerald-500/20 via-cyan-500/20 to-blue-500/20 blur-3xl" />
+        </div>
+        <div className="px-6 py-12 mx-auto text-center border shadow-2xl rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
+          <div className="w-12 h-12 mx-auto mb-4 border-b-2 border-indigo-500 rounded-full animate-spin"></div>
+          <p className="text-white/70">Chargement...</p>
         </div>
       </div>
     );
@@ -78,5 +82,9 @@ export default function ChatroomPage() {
     return null;
   }
 
-  return <ChatLayout user={user} />;
+  return (
+    <div className="fixed inset-0 overflow-hidden">
+      <ChatLayout user={user} />
+    </div>
+  );
 }

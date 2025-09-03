@@ -236,22 +236,22 @@ export default function UserManagement() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="mb-2 text-2xl font-bold text-gray-900">Gestion des Utilisateurs</h1>
-        <p className="text-gray-600">Gérez les utilisateurs, leurs rôles et leurs statuts</p>
+        <h1 className="mb-2 text-2xl font-bold">Gestion des Utilisateurs</h1>
+        <p className="text-white/70">Gérez les utilisateurs, leurs rôles et leurs statuts</p>
       </div>
 
       {/* Filtres et recherche */}
-      <div className="p-4 mb-6 bg-white border rounded-lg shadow-sm">
+      <div className="p-4 mb-6 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           {/* Recherche */}
           <div className="relative">
-            <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+            <Search className="absolute w-4 h-4 transform -translate-y-1/2 left-3 top-1/2 text-white/50" />
             <input
               type="text"
               placeholder="Rechercher un utilisateur..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full py-2 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full py-2 pl-10 pr-4 text-white placeholder-white/50 border border-white/15 rounded-lg bg-black/20 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
             />
           </div>
 
@@ -259,7 +259,7 @@ export default function UserManagement() {
           <select
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value as 'all' | 'user' | 'moderator' | 'admin')}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 text-white border rounded-lg bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
           >
             <option value="all">Tous les rôles</option>
             <option value="user">Utilisateurs</option>
@@ -271,7 +271,7 @@ export default function UserManagement() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as 'all' | 'online' | 'offline' | 'banned')}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-4 py-2 text-white border rounded-lg bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
           >
             <option value="all">Tous les statuts</option>
             <option value="online">En ligne</option>
@@ -280,41 +280,41 @@ export default function UserManagement() {
           </select>
 
           {/* Statistiques */}
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-white/70">
             {filteredUsers.length} utilisateur(s) trouvé(s)
           </div>
         </div>
       </div>
 
       {/* Liste des utilisateurs */}
-      <div className="overflow-hidden bg-white border rounded-lg shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-white/10">
+            <thead className="bg-white/5">
               <tr>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Utilisateur
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Rôle
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Statut
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Date d&apos;inscription
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-white/70">
                   Dernière activité
                 </th>
-                <th className="px-6 py-3 text-xs font-medium tracking-wider text-right text-gray-500 uppercase">
+                <th className="px-6 py-3 text-xs font-medium tracking-wider text-right uppercase text-white/70">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-white/10">
               {filteredUsers.map((user) => (
-                <tr key={user._id} className="hover:bg-gray-50">
+                <tr key={user._id} className="hover:bg-white/5">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 w-10 h-10">
@@ -326,8 +326,8 @@ export default function UserManagement() {
                         />
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{user.username}</div>
-                        <div className="text-sm text-gray-500">{user.email}</div>
+                        <div className="text-sm font-medium">{user.username}</div>
+                        <div className="text-sm text-white/70">{user.email}</div>
                       </div>
                     </div>
                   </td>
@@ -342,10 +342,10 @@ export default function UserManagement() {
                       {user.isBanned ? 'Banni' : user.isOnline ? 'En ligne' : 'Hors ligne'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                  <td className="px-6 py-4 text-sm text-white/70 whitespace-nowrap">
                     {formatDate(user.createdAt)}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                  <td className="px-6 py-4 text-sm text-white/70 whitespace-nowrap">
                     {user.lastSeen ? formatDate(user.lastSeen) : 'Jamais'}
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
@@ -355,7 +355,7 @@ export default function UserManagement() {
                           setSelectedUser(user);
                           setShowUserModal(true);
                         }}
-                        className="text-blue-600 hover:text-blue-900"
+                        className="text-indigo-300 hover:text-white"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
@@ -363,7 +363,7 @@ export default function UserManagement() {
                       {user.isBanned ? (
                         <button
                           onClick={() => handleUnbanUser(user._id)}
-                          className="text-green-600 hover:text-green-900"
+                          className="text-emerald-300 hover:text-white"
                           title="Débannir"
                         >
                           <UserCheck className="w-4 h-4" />
@@ -374,7 +374,7 @@ export default function UserManagement() {
                             setSelectedUser(user);
                             setShowBanModal(true);
                           }}
-                          className="text-red-600 hover:text-red-900"
+                          className="text-rose-300 hover:text-white"
                           title="Bannir"
                         >
                           <UserX className="w-4 h-4" />
@@ -383,7 +383,7 @@ export default function UserManagement() {
                       
                       <button
                         onClick={() => handleDeleteUser(user._id)}
-                        className="text-red-600 hover:text-red-900"
+                        className="text-rose-300 hover:text-white"
                         title="Supprimer"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -399,19 +399,19 @@ export default function UserManagement() {
 
       {/* Modal de détails utilisateur */}
       {showUserModal && selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full max-w-md p-6 mx-4 bg-white rounded-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-md p-6 mx-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
             <h3 className="mb-4 text-lg font-semibold">Détails de l&apos;utilisateur</h3>
             
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Nom d&apos;utilisateur</label>
-                <p className="text-sm text-gray-900">{selectedUser.username}</p>
+                <label className="block text-sm font-medium text-white/80">Nom d&apos;utilisateur</label>
+                <p className="text-sm">{selectedUser.username}</p>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
-                <p className="text-sm text-gray-900">{selectedUser.email}</p>
+                <label className="block text-sm font-medium text-white/80">Email</label>
+                <p className="text-sm">{selectedUser.email}</p>
               </div>
               
               <div>
@@ -419,7 +419,7 @@ export default function UserManagement() {
                 <select
                   value={selectedUser.role}
                   onChange={(e) => handleChangeRole(selectedUser._id, e.target.value as 'user' | 'moderator' | 'admin')}
-                  className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full px-3 py-2 mt-1 text-white border rounded-md shadow-sm bg-black/20 border-white/15 focus:outline-none focus:ring-indigo-500/60 focus:border-transparent"
                 >
                   <option value="user">Utilisateur</option>
                   <option value="moderator">Modérateur</option>
@@ -458,7 +458,7 @@ export default function UserManagement() {
             <div className="flex justify-end mt-6 space-x-3">
               <button
                 onClick={() => setShowUserModal(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 text-sm font-medium rounded-md bg-white/10 hover:bg-white/20"
               >
                 Fermer
               </button>
@@ -469,28 +469,28 @@ export default function UserManagement() {
 
       {/* Modal de bannissement */}
       {showBanModal && selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full max-w-md p-6 mx-4 bg-white rounded-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="w-full max-w-md p-6 mx-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm">
             <h3 className="mb-4 text-lg font-semibold">Bannir {selectedUser.username}</h3>
             
             <div className="space-y-4">
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">Raison du bannissement</label>
+                <label className="block mb-2 text-sm font-medium text-white/80">Raison du bannissement</label>
                 <textarea
                   value={banReason}
                   onChange={(e) => setBanReason(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 text-white border rounded-md shadow-sm bg-black/20 border-white/15 focus:outline-none focus:ring-indigo-500/60 focus:border-transparent"
                   rows={3}
                   placeholder="Expliquez la raison du bannissement..."
                 />
               </div>
               
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">Durée (en jours)</label>
+                <label className="block mb-2 text-sm font-medium text-white/80">Durée (en jours)</label>
                 <select
                   value={banDuration}
                   onChange={(e) => setBanDuration(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 text-white border rounded-md shadow-sm bg-black/20 border-white/15 focus:outline-none focus:ring-indigo-500/60 focus:border-transparent"
                 >
                   <option value="1">1 jour</option>
                   <option value="7">7 jours</option>
@@ -504,13 +504,13 @@ export default function UserManagement() {
             <div className="flex justify-end mt-6 space-x-3">
               <button
                 onClick={() => setShowBanModal(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 text-sm font-medium rounded-md bg-white/10 hover:bg-white/20"
               >
                 Annuler
               </button>
               <button
                 onClick={handleBanUser}
-                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+                className="px-4 py-2 text-sm font-medium text-white rounded-md bg-rose-600 hover:bg-rose-500"
               >
                 Bannir
               </button>

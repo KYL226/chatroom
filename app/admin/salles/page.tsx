@@ -129,8 +129,8 @@ export default function AdminSallesPage() {
     return (
       <div className="p-8">
         <div className="text-center">
-          <div className="w-12 h-12 mx-auto border-b-2 border-blue-500 rounded-full animate-spin"></div>
-          <p className="mt-4 text-gray-600">Chargement des salles...</p>
+          <div className="w-12 h-12 mx-auto border-b-2 border-indigo-500 rounded-full animate-spin"></div>
+          <p className="mt-4 text-white/70">Chargement des salles...</p>
         </div>
       </div>
     );
@@ -142,14 +142,14 @@ export default function AdminSallesPage() {
       <div className="mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="mb-2 text-3xl font-bold text-gray-900">Gestion des Salles</h1>
-            <p className="text-gray-600">
+            <h1 className="mb-2 text-3xl font-bold">Gestion des Salles</h1>
+            <p className="text-white/70">
               Créez et gérez les salles de discussion de la plateforme
             </p>
           </div>
           <button
             onClick={() => setShowForm(true)}
-            className="flex items-center gap-2 px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+            className="flex items-center gap-2 px-4 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-500"
           >
             <Plus className="w-4 h-4" />
             Créer une salle
@@ -160,55 +160,55 @@ export default function AdminSallesPage() {
       {/* Barre de recherche */}
       <div className="mb-6">
         <div className="relative">
-          <Search className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+          <Search className="absolute w-5 h-5 transform -translate-y-1/2 left-3 top-1/2 text-white/50" />
           <input
             type="text"
             placeholder="Rechercher une salle..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full py-3 pl-10 pr-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full py-3 pl-10 pr-4 text-white border rounded-lg placeholder-white/50 border-white/15 bg-black/20 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
           />
         </div>
       </div>
 
       {/* Messages d'erreur et de succès */}
       {error && (
-        <div className="p-4 mb-4 border border-red-200 rounded-lg bg-red-50">
-          <p className="text-red-600">{error}</p>
+        <div className="p-4 mb-4 border rounded-lg border-rose-300/40 bg-rose-500/10">
+          <p className="text-rose-300">{error}</p>
         </div>
       )}
       {success && (
-        <div className="p-4 mb-4 border border-green-200 rounded-lg bg-green-50">
-          <p className="text-green-600">{success}</p>
+        <div className="p-4 mb-4 border rounded-lg border-emerald-300/40 bg-emerald-500/10">
+          <p className="text-emerald-300">{success}</p>
         </div>
       )}
 
       {/* Formulaire de création */}
       {showForm && (
-        <div className="p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md">
+        <div className="p-6 mb-6 border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
           <h3 className="mb-4 text-lg font-semibold">Créer une nouvelle salle</h3>
           <form onSubmit={handleCreateRoom}>
             <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-2">
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">
+                <label className="block mb-2 text-sm font-medium text-white/80">
                   Nom de la salle
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 text-white border rounded-lg bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   required
                 />
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">
+                <label className="block mb-2 text-sm font-medium text-white/80">
                   Type de salle
                 </label>
                 <select
                   value={formData.isPublic ? "public" : "private"}
                   onChange={(e) => setFormData({ ...formData, isPublic: e.target.value === "public" })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 text-white border rounded-lg bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                 >
                   <option value="public">Publique</option>
                   <option value="private">Privée</option>
@@ -216,21 +216,21 @@ export default function AdminSallesPage() {
               </div>
             </div>
             <div className="mb-4">
-              <label className="block mb-2 text-sm font-medium text-gray-700">
+              <label className="block mb-2 text-sm font-medium text-white/80">
                 Description
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 text-white border rounded-lg bg-black/20 border-white/15 focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                 placeholder="Description de la salle..."
               />
             </div>
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-500"
               >
                 Créer
               </button>
@@ -240,7 +240,7 @@ export default function AdminSallesPage() {
                   setShowForm(false);
                   setFormData({ name: "", description: "", isPublic: true });
                 }}
-                className="px-4 py-2 text-gray-700 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 transition-colors border rounded-lg border-white/15 hover:bg-white/10"
               >
                 Annuler
               </button>
@@ -252,10 +252,10 @@ export default function AdminSallesPage() {
       {/* Grille des salles */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredRooms.map((room) => (
-          <div key={room._id} className="transition-shadow bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg">
+          <div key={room._id} className="transition-shadow border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm hover:shadow-2xl">
             <div className="p-6">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-xl font-semibold text-gray-900">{room.name}</h3>
+                <h3 className="text-xl font-semibold">{room.name}</h3>
                 <div className="flex items-center gap-1">
                   {room.isPublic ? (
                     <Unlock className="w-4 h-4 text-green-500" />
@@ -265,14 +265,14 @@ export default function AdminSallesPage() {
                 </div>
               </div>
 
-              <p className="mb-4 text-gray-600 line-clamp-2">{room.description}</p>
+              <p className="mb-4 text-white/70 line-clamp-2">{room.description}</p>
 
               <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-1 text-gray-500">
+                <div className="flex items-center gap-1 text-white/70">
                   <Users className="w-4 h-4" />
                   <span className="text-sm">{room.memberCount || 0} membres</span>
                 </div>
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-white/70">
                   {new Date(room.createdAt).toLocaleDateString('fr-FR')}
                 </div>
               </div>
@@ -280,13 +280,13 @@ export default function AdminSallesPage() {
               <div className="flex gap-2">
                 <button
                   onClick={() => window.location.href = `/salles/${room._id}`}
-                  className="flex-1 px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+                  className="flex-1 px-4 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-500"
                 >
                   Voir
                 </button>
                 <button
                   onClick={() => handleDeleteRoom(room._id)}
-                  className="px-4 py-2 text-red-600 transition-colors border border-red-300 rounded-lg hover:bg-red-50"
+                  className="px-4 py-2 transition-colors border rounded-lg border-rose-300/40 text-rose-300 hover:bg-rose-500/10"
                   title="Supprimer"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -300,11 +300,11 @@ export default function AdminSallesPage() {
       {/* Message si aucune salle trouvée */}
       {filteredRooms.length === 0 && !loading && (
         <div className="py-12 text-center">
-          <MessageCircle className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-          <h3 className="mb-2 text-lg font-medium text-gray-900">
+          <MessageCircle className="w-16 h-16 mx-auto mb-4 text-white/30" />
+          <h3 className="mb-2 text-lg font-medium">
             {searchTerm ? "Aucune salle trouvée" : "Aucune salle créée"}
           </h3>
-          <p className="text-gray-600">
+          <p className="text-white/70">
             {searchTerm 
               ? "Essayez de modifier vos critères de recherche"
               : "Commencez par créer votre première salle"

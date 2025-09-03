@@ -190,12 +190,12 @@ export default function SettingsPage() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="mb-2 text-2xl font-bold text-gray-900">Paramètres d&apos;Administration</h1>
-        <p className="text-gray-600">Configurez les paramètres de la plateforme</p>
+        <h1 className="mb-2 text-2xl font-bold">Paramètres d&apos;Administration</h1>
+        <p className="text-white/70">Configurez les paramètres de la plateforme</p>
       </div>
 
       {/* Onglets */}
-      <div className="mb-6 border-b border-gray-200">
+      <div className="mb-6 border-b border-white/10">
         <nav className="flex space-x-8">
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -205,8 +205,8 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab(tab.id as 'general' | 'security' | 'notifications' | 'appearance')}
                 className={`flex items-center py-2 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-white/60 text-white'
+                    : 'border-transparent text-white/70 hover:text-white hover:border-white/30'
                 }`}
               >
                 <Icon className="w-4 h-4 mr-2" />
@@ -218,71 +218,71 @@ export default function SettingsPage() {
       </div>
 
       {/* Contenu des onglets */}
-      <div className="bg-white border rounded-lg shadow-sm">
+      <div className="border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="p-6">
           {/* Onglet Général */}
           {activeTab === 'general' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900">Paramètres Généraux</h3>
+              <h3 className="text-lg font-semibold">Paramètres Généraux</h3>
               
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Nom du site
                   </label>
                   <input
                     type="text"
                     value={settings.general.siteName}
                     onChange={(e) => updateSetting('general', 'siteName', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Description du site
                   </label>
                   <input
                     type="text"
                     value={settings.general.siteDescription}
                     onChange={(e) => updateSetting('general', 'siteDescription', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Utilisateurs max par salle
                   </label>
                   <input
                     type="number"
                     value={settings.general.maxUsersPerRoom}
                     onChange={(e) => updateSetting('general', 'maxUsersPerRoom', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Longueur max des messages
                   </label>
                   <input
                     type="number"
                     value={settings.general.maxMessageLength}
                     onChange={(e) => updateSetting('general', 'maxMessageLength', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Taille max des fichiers (MB)
                   </label>
                   <input
                     type="number"
                     value={settings.general.maxFileSize}
                     onChange={(e) => updateSetting('general', 'maxFileSize', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
@@ -294,26 +294,26 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('general', 'allowFileUploads', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="allowFileUploads" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="allowFileUploads" className="ml-2 text-sm text-white/80">
                     Autoriser l&apos;upload de fichiers
                   </label>
                 </div>
               </div>
 
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">
+                <label className="block mb-2 text-sm font-medium text-white/80">
                   Types de fichiers autorisés
                 </label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {settings.general.allowedFileTypes.map((type) => (
                     <span
                       key={type}
-                      className="inline-flex items-center px-2 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full"
+                      className="inline-flex items-center px-2 py-1 text-xs font-medium text-indigo-200 rounded-full bg-white/10"
                     >
                       {type}
                       <button
                         onClick={() => removeFileType(type)}
-                        className="ml-1 text-blue-600 hover:text-blue-800"
+                        className="ml-1 text-indigo-300 hover:text-white"
                       >
                         ×
                       </button>
@@ -330,7 +330,7 @@ export default function SettingsPage() {
                         (e.target as HTMLInputElement).value = '';
                       }
                     }}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 text-white border rounded-l-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                   <button
                     onClick={(e) => {
@@ -338,7 +338,7 @@ export default function SettingsPage() {
                       addFileType(input.value);
                       input.value = '';
                     }}
-                    className="px-4 py-2 text-white bg-blue-600 rounded-r-md hover:bg-blue-700"
+                    className="px-4 py-2 text-white bg-indigo-600 rounded-r-md hover:bg-indigo-500"
                   >
                     Ajouter
                   </button>
@@ -350,7 +350,7 @@ export default function SettingsPage() {
           {/* Onglet Sécurité */}
           {activeTab === 'security' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900">Paramètres de Sécurité</h3>
+              <h3 className="text-lg font-semibold">Paramètres de Sécurité</h3>
               
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="flex items-center">
@@ -361,7 +361,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('security', 'requireEmailVerification', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="requireEmailVerification" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="requireEmailVerification" className="ml-2 text-sm text-white/80">
                     Vérification email obligatoire
                   </label>
                 </div>
@@ -374,44 +374,44 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('security', 'allowRegistration', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="allowRegistration" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="allowRegistration" className="ml-2 text-sm text-white/80">
                     Autoriser les inscriptions
                   </label>
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Longueur min du mot de passe
                   </label>
                   <input
                     type="number"
                     value={settings.security.minPasswordLength}
                     onChange={(e) => updateSetting('security', 'minPasswordLength', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Timeout de session (heures)
                   </label>
                   <input
                     type="number"
                     value={settings.security.sessionTimeout}
                     onChange={(e) => updateSetting('security', 'sessionTimeout', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Tentatives de connexion max
                   </label>
                   <input
                     type="number"
                     value={settings.security.maxLoginAttempts}
                     onChange={(e) => updateSetting('security', 'maxLoginAttempts', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
@@ -423,7 +423,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('security', 'requireStrongPassword', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="requireStrongPassword" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="requireStrongPassword" className="ml-2 text-sm text-white/80">
                     Mot de passe fort obligatoire
                   </label>
                 </div>
@@ -436,7 +436,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('security', 'enableTwoFactor', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="enableTwoFactor" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="enableTwoFactor" className="ml-2 text-sm text-white/80">
                     Activer l&apos;authentification à deux facteurs
                   </label>
                 </div>
@@ -447,7 +447,7 @@ export default function SettingsPage() {
           {/* Onglet Modération */}
           {activeTab === 'moderation' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900">Paramètres de Modération</h3>
+              <h3 className="text-lg font-semibold">Paramètres de Modération</h3>
               
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="flex items-center">
@@ -458,7 +458,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('moderation', 'enableAutoModeration', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="enableAutoModeration" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="enableAutoModeration" className="ml-2 text-sm text-white/80">
                     Modération automatique
                   </label>
                 </div>
@@ -471,7 +471,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('moderation', 'autoDeleteProfanity', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="autoDeleteProfanity" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="autoDeleteProfanity" className="ml-2 text-sm text-white/80">
                     Suppression automatique des gros mots
                   </label>
                 </div>
@@ -484,7 +484,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('moderation', 'requireApprovalForRooms', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="requireApprovalForRooms" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="requireApprovalForRooms" className="ml-2 text-sm text-white/80">
                     Approbation requise pour les nouvelles salles
                   </label>
                 </div>
@@ -497,51 +497,51 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('moderation', 'enableWordFilter', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="enableWordFilter" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="enableWordFilter" className="ml-2 text-sm text-white/80">
                     Filtre de mots
                   </label>
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Signalements avant bannissement
                   </label>
                   <input
                     type="number"
                     value={settings.moderation.maxReportsBeforeBan}
                     onChange={(e) => updateSetting('moderation', 'maxReportsBeforeBan', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Durée de bannissement (jours)
                   </label>
                   <input
                     type="number"
                     value={settings.moderation.banDuration}
                     onChange={(e) => updateSetting('moderation', 'banDuration', parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
               </div>
 
               {settings.moderation.enableWordFilter && (
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Mots filtrés
                   </label>
                   <div className="flex flex-wrap gap-2 mb-2">
                     {settings.moderation.filteredWords.map((word) => (
                       <span
                         key={word}
-                        className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full"
+                        className="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full text-rose-200 bg-white/10"
                       >
                         {word}
                         <button
                           onClick={() => removeFilteredWord(word)}
-                          className="ml-1 text-red-600 hover:text-red-800"
+                          className="ml-1 text-rose-300 hover:text-white"
                         >
                           ×
                         </button>
@@ -558,7 +558,7 @@ export default function SettingsPage() {
                           (e.target as HTMLInputElement).value = '';
                         }
                       }}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="flex-1 px-3 py-2 text-white border rounded-l-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                     />
                     <button
                       onClick={(e) => {
@@ -566,7 +566,7 @@ export default function SettingsPage() {
                         addFilteredWord(input.value);
                         input.value = '';
                       }}
-                      className="px-4 py-2 text-white bg-red-600 rounded-r-md hover:bg-red-700"
+                      className="px-4 py-2 text-white rounded-r-md bg-rose-600 hover:bg-rose-500"
                     >
                       Ajouter
                     </button>
@@ -579,7 +579,7 @@ export default function SettingsPage() {
           {/* Onglet Notifications */}
           {activeTab === 'notifications' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900">Paramètres de Notifications</h3>
+              <h3 className="text-lg font-semibold">Paramètres de Notifications</h3>
               
               <div className="space-y-4">
                 <div className="flex items-center">
@@ -590,7 +590,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('notifications', 'emailNotifications', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="emailNotifications" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="emailNotifications" className="ml-2 text-sm text-white/80">
                     Notifications par email
                   </label>
                 </div>
@@ -603,7 +603,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('notifications', 'pushNotifications', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="pushNotifications" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="pushNotifications" className="ml-2 text-sm text-white/80">
                     Notifications push
                   </label>
                 </div>
@@ -616,7 +616,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('notifications', 'notifyOnReport', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnReport" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="notifyOnReport" className="ml-2 text-sm text-white/80">
                     Notifier lors d&apos;un signalement
                   </label>
                 </div>
@@ -629,7 +629,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('notifications', 'notifyOnNewUser', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnNewUser" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="notifyOnNewUser" className="ml-2 text-sm text-white/80">
                     Notifier lors d&apos;une nouvelle inscription
                   </label>
                 </div>
@@ -642,7 +642,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('notifications', 'notifyOnRoomCreation', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="notifyOnRoomCreation" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="notifyOnRoomCreation" className="ml-2 text-sm text-white/80">
                     Notifier lors de la création d&apos;une salle
                   </label>
                 </div>
@@ -653,17 +653,17 @@ export default function SettingsPage() {
           {/* Onglet Apparence */}
           {activeTab === 'appearance' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-900">Paramètres d&apos;Apparence</h3>
+              <h3 className="text-lg font-semibold">Paramètres d&apos;Apparence</h3>
               
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Thème
                   </label>
                   <select
                     value={settings.appearance.theme}
                     onChange={(e) => updateSetting('appearance', 'theme', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 py-2 text-white border rounded-md bg-black/20 border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   >
                     <option value="light">Clair</option>
                     <option value="dark">Sombre</option>
@@ -672,14 +672,14 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-700">
+                  <label className="block mb-2 text-sm font-medium text-white/80">
                     Couleur principale
                   </label>
                   <input
                     type="color"
                     value={settings.appearance.primaryColor}
                     onChange={(e) => updateSetting('appearance', 'primaryColor', e.target.value)}
-                    className="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full h-10 border rounded-md border-white/15 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 focus:border-transparent"
                   />
                 </div>
 
@@ -691,7 +691,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('appearance', 'enableEmojis', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="enableEmojis" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="enableEmojis" className="ml-2 text-sm text-white/80">
                     Activer les emojis
                   </label>
                 </div>
@@ -704,7 +704,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('appearance', 'enableMarkdown', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="enableMarkdown" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="enableMarkdown" className="ml-2 text-sm text-white/80">
                     Activer le Markdown
                   </label>
                 </div>
@@ -717,7 +717,7 @@ export default function SettingsPage() {
                     onChange={(e) => updateSetting('appearance', 'showOnlineStatus', e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <label htmlFor="showOnlineStatus" className="ml-2 text-sm text-gray-700">
+                  <label htmlFor="showOnlineStatus" className="ml-2 text-sm text-white/80">
                     Afficher le statut en ligne
                   </label>
                 </div>
@@ -727,17 +727,17 @@ export default function SettingsPage() {
         </div>
 
         {/* Boutons d'action */}
-        <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50">
-          <div className="text-sm text-gray-600">
+        <div className="flex items-center justify-between px-6 py-4 border-t border-white/10 bg-white/5 rounded-b-2xl">
+          <div className="text-sm text-white/70">
             {saved && (
-              <span className="text-green-600">✓ Paramètres sauvegardés</span>
+              <span className="text-emerald-300">✓ Paramètres sauvegardés</span>
             )}
           </div>
           <div className="flex space-x-3">
             <button
               onClick={saveSettings}
               disabled={loading}
-              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save className="w-4 h-4 mr-2" />
               {loading ? 'Sauvegarde...' : 'Sauvegarder'}

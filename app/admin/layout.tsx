@@ -63,23 +63,33 @@ export default function AdminLayout({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Chargement...</p>
+      <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none -z-10">
+          <div className="absolute -top-40 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+          <div className="absolute -bottom-40 right-1/3 h-[380px] w-[380px] rounded-full bg-gradient-to-tr from-emerald-500/20 via-cyan-500/20 to-blue-500/20 blur-3xl" />
+        </div>
+        <div className="px-6 py-10 mx-auto text-center border rounded-2xl border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl">
+          <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-indigo-500"></div>
+          <p className="text-white/70">Chargement...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="relative flex min-h-screen overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none -z-10">
+        <div className="absolute -top-40 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 blur-3xl" />
+        <div className="absolute -bottom-40 right-1/3 h-[380px] w-[380px] rounded-full bg-gradient-to-tr from-emerald-500/20 via-cyan-500/20 to-blue-500/20 blur-3xl" />
+      </div>
       {/* Sidebar */}
       <AdminSidebar user={user} />
       
       {/* Main content */}
-      <div className="flex-1">
+      <div className="flex-1 p-6">
+        <div className="min-h-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-4">
         {children}
+        </div>
       </div>
     </div>
   );

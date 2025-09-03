@@ -244,7 +244,8 @@ export default function MessageInput({
             }}
             onKeyPress={handleKeyPress}
             placeholder="Tapez votre message..."
-            className="w-full px-3 py-2 overflow-y-auto border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 overflow-y-auto text-black border border-gray-600 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+
             rows={1}
             style={{ minHeight: '40px', maxHeight: '120px' }}
           />
