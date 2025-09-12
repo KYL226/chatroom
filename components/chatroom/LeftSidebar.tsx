@@ -10,7 +10,8 @@ import {
   FileText, 
   User,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  Link
 } from 'lucide-react';
 import SearchBar from '@/components/ui/SearchBar';
 import Avatar from '@/components/ui/Avatar';
@@ -322,7 +323,7 @@ useEffect(() => {
   };
 
   return (
-    <div className="flex flex-col w-80 border-r border-white/10 bg-transparent">
+    <div className="flex flex-col bg-transparent border-r w-80 border-white/10">
       {/* En-tête avec profil utilisateur */}
       <div className="p-4 border-b border-white/10 user-menu-container bg-white/5 backdrop-blur-sm">
         <div className="relative">
@@ -347,7 +348,7 @@ useEffect(() => {
 
           {/* Menu déroulant */}
           {showUserMenu && (
-            <div className="absolute left-0 right-0 z-50 mt-1 bg-white/90 backdrop-blur-md border border-white/20 rounded-lg shadow-xl top-full">
+            <div className="absolute left-0 right-0 z-50 mt-1 border rounded-lg shadow-xl bg-white/90 backdrop-blur-md border-white/20 top-full">
               <div className="py-1">
                 <button
                   onClick={handleProfileClick}
@@ -379,21 +380,21 @@ useEffect(() => {
         {/* Liens statiques */}
         <div className="px-4 py-2">
           <div className="space-y-1">
-            <a href="#" className="flex items-center px-2 py-2 text-sm font-medium text-white/80 rounded-md hover:bg-white/10">
+            <a href="#" className="flex items-center px-2 py-2 text-sm font-medium rounded-md text-white/80 hover:bg-white/10">
               <FileText className="w-4 h-4 mr-3" />
               Documentation
             </a>
-            <a href="http://localhost:3000/salles" className="flex items-center px-2 py-2 text-sm font-medium text-white/80 rounded-md hover:bg-white/10">
+            <Link href="/salles" className="flex items-center px-2 py-2 text-sm font-medium rounded-md text-white/80 hover:bg-white/10">
               <Users className="w-4 h-4 mr-3" />
               Explorer les salles
-            </a>
+            </Link>
           </div>
         </div>
 
         {/* Salles de chat */}
         <div className="px-4 py-2">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+            <h3 className="text-xs font-semibold tracking-wider uppercase text-white/60">
               Salles de chat
             </h3>
             <button className="p-1 rounded hover:bg-white/10">
@@ -426,7 +427,7 @@ useEffect(() => {
                     <div className="flex-1 text-left">
                       <div className="font-medium">{room.name}</div>
                       {room.description && (
-                        <div className="text-xs text-white/60 truncate">{room.description}</div>
+                        <div className="text-xs truncate text-white/60">{room.description}</div>
                       )}
                     </div>
                     {room.members && (
@@ -453,7 +454,7 @@ useEffect(() => {
         {/* Conversations privées */}
         <div className="px-4 py-2">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold tracking-wider text-white/60 uppercase">
+            <h3 className="text-xs font-semibold tracking-wider uppercase text-white/60">
               Conversations privées
             </h3>
             <button className="p-1 rounded hover:bg-white/10">
@@ -483,7 +484,7 @@ useEffect(() => {
                   <div className="flex-1 text-left">
                     <div className="font-medium">{getConversationName(conversation)}</div>
                     {conversation.lastMessage && (
-                      <div className="text-xs text-white/60 truncate">
+                      <div className="text-xs truncate text-white/60">
                         {conversation.lastMessage.sender.name}: {conversation.lastMessage.content}
                       </div>
                     )}
