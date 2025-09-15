@@ -83,7 +83,7 @@ export default function ChatroomPage() {
   }
 
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="h-screen overflow-hidden">
       <ChatLayout user={user} />
     </div>
   );

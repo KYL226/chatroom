@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+require('dotenv').config();
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -19,6 +21,11 @@ const io = new Server(server, {
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Healthcheck simple
+app.get('/health', (_req, res) => {
+  res.json({ ok: true });
+});
 
 // Connexion à MongoDB
 connectDB();
@@ -42,6 +49,7 @@ io.use(async (socket, next) => {
     socket.user = user;
     next();
   } catch (error) {
+    console.error('Authentification échouée:', error);
     next(new Error('Authentification échouée'));
   }
 });
@@ -120,7 +128,7 @@ io.on('connection', (socket) => {
 
   // Typing indicator
   socket.on('typing_start', (data) => {
-    const { roomId, conversationId } = data;
+    const { roomId } = data;
     if (roomId) {
       socket.to(`room_${roomId}`).emit('user_typing', {
         userId: socket.userId,
@@ -131,7 +139,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('typing_stop', (data) => {
-    const { roomId, conversationId } = data;
+    const { roomId } = data;
     if (roomId) {
       socket.to(`room_${roomId}`).emit('user_stop_typing', {
         userId: socket.userId,
@@ -167,7 +175,7 @@ app.post('/api/messages', async (req, res) => {
   }
 });
 
-const PORT = process.env.SOCKET_PORT || 3001;
+const PORT = process.env.PORT || process.env.SOCKET_PORT || 3001;
 server.listen(PORT, () => {
   console.log(`Serveur Socket.io démarré sur le port ${PORT}`);
 });

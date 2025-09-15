@@ -323,9 +323,9 @@ useEffect(() => {
   };
 
   return (
-    <div className="flex flex-col bg-transparent border-r w-80 border-white/10">
+    <div className="flex flex-col h-full bg-transparent border-r w-80 border-white/10">
       {/* En-tête avec profil utilisateur */}
-      <div className="p-4 border-b border-white/10 user-menu-container bg-white/5 backdrop-blur-sm">
+      <div className="flex-shrink-0 p-4 border-b border-white/10 user-menu-container bg-white/5 backdrop-blur-sm">
         <div className="relative">
           <button 
             onClick={() => setShowUserMenu(!showUserMenu)}
@@ -371,12 +371,12 @@ useEffect(() => {
       </div>
 
       {/* Barre de recherche */}
-      <div className="p-4">
+      <div className="flex-shrink-0 p-4">
         <SearchBar />
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto">
         {/* Liens statiques */}
         <div className="px-4 py-2">
           <div className="space-y-1">

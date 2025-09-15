@@ -19,11 +19,16 @@ export function useSocket(): UseSocketReturn {
     if (socketState?.connected || connectingRef.current) return;
     connectingRef.current = true;
 
-    const baseUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3000';
+    // Prefer explicit env var in production. Default to the dedicated socket server (3001) in dev.
+    const computedDefault = typeof window !== 'undefined'
+      ? `${window.location.protocol}//${window.location.hostname}:3001`
+      : 'http://localhost:3001';
+    const baseUrl = process.env.NEXT_PUBLIC_SOCKET_URL || computedDefault;
+
     const socket = io(baseUrl, {
       auth: { token },
       path: '/socket.io',
-      transports: ['websocket', 'polling'],
+      transports: ['polling', 'websocket'],
       forceNew: false,
       reconnection: true,
       reconnectionAttempts: Infinity,
@@ -50,13 +55,13 @@ export function useSocket(): UseSocketReturn {
       // Fallback localhost -> 127.0.0.1 si nécessaire
       try {
         const url = new URL(baseUrl);
-        if (!triedLocalhostFallbackRef.current && url.hostname === 'localhost') {
+        if (!triedLocalhostFallbackRef.current && (url.hostname === 'localhost' || url.hostname === window.location.hostname)) {
           triedLocalhostFallbackRef.current = true;
-          const alt = baseUrl.replace('localhost', '127.0.0.1');
+          const alt = baseUrl.replace(url.hostname, '127.0.0.1');
           const altSocket = io(alt, {
             auth: { token },
             path: '/socket.io',
-            transports: ['websocket', 'polling'],
+            transports: ['polling', 'websocket'],
             forceNew: true,
             reconnection: true,
             reconnectionAttempts: Infinity,
@@ -75,13 +80,13 @@ export function useSocket(): UseSocketReturn {
     socket.on('connect_timeout', () => {
       try {
         const url = new URL(baseUrl);
-        if (!triedAlternatePortRef.current && (url.port === '3000' || (!url.port && url.hostname === 'localhost'))) {
+        if (!triedAlternatePortRef.current && (url.port === '3001' || (!url.port && url.hostname === 'localhost'))) {
           triedAlternatePortRef.current = true;
-          const alt = `${url.protocol}//${url.hostname}:3001`;
+          const alt = `${url.protocol}//${url.hostname}:3000`;
           const altSocket = io(alt, {
             auth: { token },
             path: '/socket.io',
-            transports: ['websocket', 'polling'],
+            transports: ['polling', 'websocket'],
             forceNew: true,
             reconnection: true,
             reconnectionAttempts: Infinity,

@@ -179,7 +179,7 @@ export default function RightSidebar({ activeRoom, activeConversation }: RightSi
   }
 
   return (
-    <div className="h-full overflow-y-auto">
+    <div className="h-full overflow-y-auto min-h-0">
       {/* À propos */}
       <div className="p-4 border-b border-gray-200">
         <h3 className="mb-3 text-sm font-semibold text-gray-900">

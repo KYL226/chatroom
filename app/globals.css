@@ -27,3 +27,32 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
 }
+
+/* Styles pour la scrollbar stable dans le chat */
+.chat-messages-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  overflow-anchor: none;
+}
+
+.chat-messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages-container::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+.chat-messages-container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(156, 163, 175, 0.7);
+}
+
+/* Empêcher le déplacement de la scrollbar */
+.chat-messages-container {
+  scroll-behavior: auto !important;
+}

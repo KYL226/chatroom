@@ -76,11 +76,26 @@ export default function ChatArea({
 
   // Scroll automatique vers le bas
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (listContainerRef.current) {
+      // Utiliser requestAnimationFrame pour un scroll plus fluide
+      requestAnimationFrame(() => {
+        if (listContainerRef.current) {
+          listContainerRef.current.scrollTop = listContainerRef.current.scrollHeight;
+        }
+      });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // Scroll vers le bas seulement si on est déjà en bas
+    if (listContainerRef.current) {
+      const container = listContainerRef.current;
+      const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 100;
+      
+      if (isNearBottom) {
+        scrollToBottom();
+      }
+    }
   }, [messages]);
 
   // Connexion Socket.io
@@ -165,13 +180,17 @@ export default function ChatArea({
       requestAnimationFrame(() => {
         const newScrollHeight = container?.scrollHeight || 0;
         const delta = newScrollHeight - prevScrollHeight;
-        if (container) container.scrollTop = delta;
+        if (container) {
+          container.scrollTop = delta;
+        }
       });
     } else {
       setMessages(data.messages || []);
       // Scroll en bas pour les messages récents
       requestAnimationFrame(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
+        if (listContainerRef.current) {
+          listContainerRef.current.scrollTop = listContainerRef.current.scrollHeight;
+        }
       });
     }
   }, [chatId, chatType]);
@@ -303,9 +322,9 @@ export default function ChatArea({
   }
 
   return (
-    <div className="flex flex-col flex-1 h-full">
+    <div className="flex flex-col h-full">
       {/* En-tête du chat */}
-      <div className="sticky top-0 z-10 p-4 border-b border-white/10 bg-white/5 backdrop-blur-sm">
+      <div className="flex-shrink-0 p-4 border-b border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-semibold">
@@ -338,8 +357,7 @@ export default function ChatArea({
       {/* Liste des messages scrollable */}
       <div 
         ref={listContainerRef} 
-        className="flex-1 px-4 overflow-y-auto"
-        style={{ scrollbarWidth: 'thin' /* optionnel pour Firefox */, WebkitOverflowScrolling: 'touch' }}
+        className="flex-1 px-4 overflow-y-auto min-h-0 chat-messages-container"
       >
         {loading ? (
           <div className="flex items-center justify-center h-full">
@@ -355,7 +373,7 @@ export default function ChatArea({
       </div>
 
       {/* Zone de saisie fixe en bas */}
-      <div className="sticky bottom-0 z-10 border-t border-white/10 bg-white/5 backdrop-blur-sm">
+      <div className="flex-shrink-0 border-t border-white/10 bg-white/5 backdrop-blur-sm">
         <MessageInput
           onSendMessage={handleSendMessage}
           roomId={chatType === 'room' ? chatId : undefined}

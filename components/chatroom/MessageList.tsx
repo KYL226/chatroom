@@ -44,7 +44,8 @@ export default function MessageList({ messages, currentUser }: MessageListProps)
   }, [messages]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Cette fonction n'est plus utilisée car le scroll est géré par le parent
+    // messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const getInitials = (name: string) => {
