@@ -13,10 +13,16 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000",
+    origin: "https://chatroom-ivory-nine.vercel.app", // URL de votre frontend
     methods: ["GET", "POST"]
   }
 });
+/*const io = new Server(server, {
+  cors: {
+    origin: process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});*/
 
 // Middleware
 app.use(cors());
