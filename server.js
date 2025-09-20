@@ -20,8 +20,13 @@ const server = createServer(app);
 // ÉTAPE 2 : Configurer Socket.IO avec CORS et mode sécurisé
 const io = new Server(server, {
   cors: {
-    origin: process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000",
-    methods: ["GET", "POST"]
+    origin: [
+      process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000",
+      "https://chatroom-ivory-nine.vercel.app", // Votre frontend Vercel
+      "http://localhost:3000" // Fallback pour le développement local
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
   },
   // ÉTAPE 3 : Forcer le mode sécurisé car on est derrière HTTPS (Render)
   secure: true
@@ -30,7 +35,14 @@ const io = new Server(server, {
 // Middleware
 // REMARQUE : Ce middleware CORS est utile pour vos routes API REST (comme /api/messages),
 // mais il n'affecte PAS Socket.IO. Socket.IO utilise sa propre config CORS ci-dessus.
-app.use(cors());
+app.use(cors({
+  origin: [
+    process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000",
+    "https://chatroom-ivory-nine.vercel.app", // Votre frontend Vercel
+    "http://localhost:3000" // Fallback pour le développement local
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Healthcheck simple

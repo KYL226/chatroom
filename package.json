@@ -9,6 +9,7 @@
     "dev:simple": "node scripts/start-simple.js",
     "build": "next build",
     "start": "next start",
+    "start:socket": "node server.js",
     "lint": "next lint",
     "setup": "node scripts/setup.js",
     "clean-db": "node scripts/clean-db.js",

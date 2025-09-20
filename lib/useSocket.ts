@@ -19,11 +19,16 @@ export function useSocket(): UseSocketReturn {
     if (socketState?.connected || connectingRef.current) return;
     connectingRef.current = true;
 
-    // Prefer explicit env var in production. Default to the dedicated socket server (3001) in dev.
+    // Configuration pour production et développement
     const computedDefault = typeof window !== 'undefined'
       ? `${window.location.protocol}//${window.location.hostname}:3001`
       : 'http://localhost:3001';
-    const baseUrl = process.env.NEXT_PUBLIC_SOCKET_URL || computedDefault;
+    
+    // En production, utiliser l'URL du serveur Render
+    const baseUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 
+      (typeof window !== 'undefined' && window.location.hostname !== 'localhost' 
+        ? 'https://chatroom-mav1.onrender.com' 
+        : computedDefault);
 
     const socket = io(baseUrl, {
       auth: { token },
