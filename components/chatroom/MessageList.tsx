@@ -238,12 +238,14 @@ export default function MessageList({ messages, currentUser }: MessageListProps)
                       : 'bg-gray-100 text-gray-900'
                   }`}
                 >
-                  <p className="text-sm break-words whitespace-pre-wrap">
-                    <EmojiDisplay text={message.content} />
-                  </p>
+                  {message.content && message.content.trim() && (
+                    <p className="text-sm break-words whitespace-pre-wrap">
+                      <EmojiDisplay text={message.content} />
+                    </p>
+                  )}
 
                   {message.attachments && message.attachments.length > 0 && (
-                    <div className="mt-2 space-y-2">
+                    <div className={`space-y-2 ${message.content && message.content.trim() ? 'mt-2' : ''}`}>
                       {message.attachments.map(renderAttachment)}
                     </div>
                   )}

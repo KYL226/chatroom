@@ -1,11 +1,14 @@
 import mongoose, { ConnectOptions } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/chat_bd';
+const MONGODB_URI = process.env.MONGODB_URI /*|| 'mongodb://localhost:27017/chat_bd'*/;
 
 if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
 }
+
+// Assertion de type pour TypeScript
+const MONGODB_URI_STRING: string = MONGODB_URI;
 
 // Global is used here to maintain a cached connection across hot reloads
 let cached = global.mongoose;
@@ -40,7 +43,7 @@ export async function connectDB() {
       w: 'majority' as const, // ✅ Correction ici
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI_STRING, opts).then((mongoose) => {
       console.log('✅ MongoDB connected successfully');
 
       mongoose.connection.on('error', (err) => {

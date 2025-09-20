@@ -65,11 +65,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Token invalide.' }, { status: 401 });
     }
     const body = await req.json();
-    const { conversationId, roomId, content } = body as { conversationId?: string; roomId?: string; content: string };
+    const { conversationId, roomId, content } = body as { conversationId?: string; roomId?: string; content?: string };
     const { attachments } = body as { attachments?: Array<{ url: string; type: string; name: string; size?: number }> };
 
     if (!conversationId && !roomId) {
       return NextResponse.json({ error: 'conversationId ou roomId requis.' }, { status: 400 });
+    }
+
+    // Vérifier qu'il y a soit du contenu soit des pièces jointes
+    if ((!content || content.trim() === '') && (!attachments || attachments.length === 0)) {
+      return NextResponse.json({ error: 'Le message doit contenir du texte ou des pièces jointes.' }, { status: 400 });
     }
 
     await connectDB();

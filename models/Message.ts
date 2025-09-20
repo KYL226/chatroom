@@ -29,7 +29,7 @@ const MessageSchema: Schema = new Schema({
   conversation: { type: Schema.Types.ObjectId, ref: 'Conversation' },
   room: { type: Schema.Types.ObjectId, ref: 'Room' },
   sender: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  content: { type: String, required: true },
+  content: { type: String, default: '' },
   attachments: { type: [AttachmentSchema], default: [] },
   createdAt: { type: Date, default: Date.now },
   read: { type: Boolean, default: false },
