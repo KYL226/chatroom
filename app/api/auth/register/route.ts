@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import User from '@/models/User';
 import { connectDB } from '@/lib/mongodb';
 
+export const runtime = 'nodejs';
+
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 export async function POST(req: Request) {

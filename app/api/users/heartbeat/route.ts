@@ -5,8 +5,6 @@ import User from '@/models/User';
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
-    
     const token = request.headers.get('authorization')?.replace('Bearer ', '');
     if (!token) {
       return NextResponse.json({ error: 'Token manquant' }, { status: 401 });
@@ -17,13 +15,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Token invalide' }, { status: 401 });
     }
 
-    // Mettre à jour le statut en ligne et la dernière activité
-    await User.findByIdAndUpdate(decoded.userId, {
-      isOnline: true,
-      lastSeen: new Date()
-    });
+    try {
+      await connectDB();
+      
+      // Mettre à jour le statut en ligne et la dernière activité
+      await User.findByIdAndUpdate(decoded.userId, {
+        isOnline: true,
+        lastSeen: new Date()
+      });
 
-    return NextResponse.json({ message: 'Heartbeat mis à jour' });
+      return NextResponse.json({ message: 'Heartbeat mis à jour' });
+    } catch (dbError) {
+      console.error('Erreur de connexion à la base de données:', dbError);
+      // Retourner une réponse de succès même si la DB n'est pas accessible
+      // pour éviter de casser l'expérience utilisateur
+      return NextResponse.json({ 
+        message: 'Heartbeat mis à jour (mode hors ligne)',
+        warning: 'Connexion à la base de données temporairement indisponible'
+      });
+    }
   } catch (error) {
     console.error('Erreur lors de la mise à jour du heartbeat:', error);
     return NextResponse.json(

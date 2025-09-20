@@ -4,6 +4,8 @@ import { connectDB } from '@/lib/mongodb';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
+export const runtime = 'nodejs';
+
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
 export async function POST(req: Request) {

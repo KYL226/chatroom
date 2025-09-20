@@ -4,6 +4,8 @@ import Room, { IRoom } from '@/models/Room';
 import { verifyToken } from '@/lib/auth';
 import { JwtPayload } from 'jsonwebtoken'; // Assurez-vous d'importer le type JwtPayload si nécessaire
 
+export const runtime = 'nodejs';
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }

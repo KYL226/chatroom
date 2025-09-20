@@ -4,6 +4,8 @@ import Room, { IRoom } from '@/models/Room';
 import { verifyToken } from '@/lib/auth';
 import { JwtPayload } from 'jsonwebtoken'; // Pour typer le token décodé
 
+export const runtime = 'nodejs';
+
 interface Member {
   _id: {
     toString(): string;

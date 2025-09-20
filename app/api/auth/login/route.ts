@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 import User from '@/models/User';
 import { connectDB } from '@/lib/mongodb';
 
+export const runtime = 'nodejs';
+
 
 
 export async function POST(req: Request) {

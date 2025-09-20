@@ -3,6 +3,8 @@ import Room from '@/models/Room';
 import { connectDB } from '@/lib/mongodb';
 import jwt from 'jsonwebtoken';
 
+export const runtime = 'nodejs';
+
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
 export async function POST(req: Request) {

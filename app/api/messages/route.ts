@@ -4,6 +4,8 @@ import { connectDB } from '@/lib/mongodb';
 import jwt from 'jsonwebtoken';
 import { MessageFilter } from '@/types/global';
 
+export const runtime = 'nodejs';
+
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
 // GET: Récupérer les messages d'une conversation ou d'une salle avec pagination
