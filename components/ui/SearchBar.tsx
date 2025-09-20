@@ -187,7 +187,7 @@ export default function SearchBar({
       )}
 
       {showResults && (
-        <div className="absolute left-0 right-0 z-50 mt-1 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg top-full max-h-96">
+        <div className="absolute left-0 right-0 z-10 mt-1 overflow-y-auto bg-white border border-gray-200 rounded-lg shadow-lg top-full max-h-96">
           {isLoading && (
             <div className="p-4 text-center text-gray-500">
               Recherche en cours...

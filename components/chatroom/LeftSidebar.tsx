@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { 
   Plus, 
   MessageCircle, 
@@ -10,10 +11,9 @@ import {
   FileText, 
   User,
   LogOut,
-  ChevronDown,
-  Link
+  ChevronDown
 } from 'lucide-react';
-import SearchBar from '@/components/ui/SearchBar';
+// import SearchBar from '@/components/ui/SearchBar';
 import Avatar from '@/components/ui/Avatar';
 import ReportButton from '@/components/ui/ReportBoutton';
 
@@ -329,7 +329,7 @@ useEffect(() => {
         <div className="relative">
           <button 
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center justify-between w-full p-2 transition-colors rounded-lg hover:bg-gray-100"
+            className="flex items-center justify-between w-full p-2 transition-colors rounded-lg hover:bg-white/10"
           >
             <div className="flex items-center space-x-3">
               <Avatar
@@ -339,16 +339,16 @@ useEffect(() => {
                 fallback={getInitials(user.name)}
               />
               <div className="text-left">
-                <h3 className="font-semibold text-gray-900">{user.name}</h3>
-                <p className="text-sm text-gray-500">{user.email}</p>
+                <h3 className="font-semibold text-white">{user.name}</h3>
+                <p className="text-sm text-white/70">{user.email}</p>
               </div>
             </div>
-            <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`w-4 h-4 text-white/70 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
           </button>
 
           {/* Menu déroulant */}
           {showUserMenu && (
-            <div className="absolute left-0 right-0 z-50 mt-1 border rounded-lg shadow-xl bg-white/90 backdrop-blur-md border-white/20 top-full">
+            <div className="absolute left-0 right-0 z-30 mt-1 border rounded-lg shadow-xl bg-white/95 backdrop-blur-md border-white/20 top-full">
               <div className="py-1">
                 <button
                   onClick={handleProfileClick}
@@ -371,20 +371,26 @@ useEffect(() => {
       </div>
 
       {/* Barre de recherche */}
-      <div className="flex-shrink-0 p-4">
-        <SearchBar />
-      </div>
+     {/* 
+  <div className="relative flex-shrink-0 p-4">
+    <SearchBar />
+  </div> 
+*/}
+
 
       {/* Navigation */}
       <div className="flex-1 min-h-0 overflow-y-auto">
         {/* Liens statiques */}
-        <div className="px-4 py-2">
+        <div className="px-4 py-3 border-b border-white/10">
+          <h3 className="mb-2 text-xs font-semibold tracking-wider uppercase text-white/60">
+            Navigation
+          </h3>
           <div className="space-y-1">
-            <a href="#" className="flex items-center px-2 py-2 text-sm font-medium rounded-md text-white/80 hover:bg-white/10">
+            <a href="#" className="flex items-center px-3 py-2 text-sm font-medium transition-colors rounded-md text-white/80 hover:bg-white/10">
               <FileText className="w-4 h-4 mr-3" />
               Documentation
             </a>
-            <Link href="/salles" className="flex items-center px-2 py-2 text-sm font-medium rounded-md text-white/80 hover:bg-white/10">
+            <Link href="/salles" className="flex items-center px-3 py-2 text-sm font-medium transition-colors rounded-md text-white/80 hover:bg-white/10">
               <Users className="w-4 h-4 mr-3" />
               Explorer les salles
             </Link>
@@ -509,7 +515,7 @@ useEffect(() => {
 
         {/* Contacts */}
         <div className="px-4 py-2">
-          <h3 className="mb-2 text-xs font-semibold tracking-wider text-gray-500 uppercase">
+          <h3 className="mb-2 text-xs font-semibold tracking-wider uppercase text-white/60">
             Contacts
           </h3>
           

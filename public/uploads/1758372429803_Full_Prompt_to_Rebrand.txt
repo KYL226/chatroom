@@ -1,0 +1,57 @@
+I need to fully rebrand this AI chat assistant website into a new AI assistant identity (name and branding) — a modern, professional assistant powered by Gemini AI (Gemini 1.5 / Gemini Pro).  
+
+⚠️ Important:
+- The name "NovaAI" is only a placeholder/reference.
+- Always generate a new, unique brand name for each run (e.g., Lumena, AstraMind, VioraAI, etc.)
+- Clearly mention in the description that the assistant is powered by Google’s Gemini models, but keep the frontend branding as the newly generated name.
+
+✅ Instructions:
+1. Branding & Identity:
+   - Replace old brand name with a newly generated brand name.
+   - Generate a matching futuristic tagline and short description.
+   - Use a logo concept based on stars, sparks, AI energy, or cosmic intelligence.
+   - Apply a fresh blue/indigo gradient color scheme.
+   - Generate a unique favicon concept.
+   - Update all meta tags dynamically.
+
+2. Hero Section:
+   - Create a new bold title and supporting subtitle.
+   - Generate a 3-message chat demo showcasing real-world uses.
+
+3. About Section:
+   - New description of the assistant’s purpose and vision.
+   - Mention Gemini AI under the hood.
+   - Highlight core values/features.
+
+4. Features Section:
+   - 6 feature cards with new icons, names, and Gemini-powered benefits.
+
+5. Testimonials:
+   - 3 fictional users with new names, roles, and reviews.
+
+6. FAQ Section:
+   - 8 new FAQs (2 on Gemini, 2 on privacy, 4 on use cases).
+
+7. Legal Pages:
+   - Updated Privacy Policy & Terms with fictional company data.
+
+8. Sample Conversations:
+   - Showcase Gemini strengths in chats (writing, business, planning).
+
+9. Tech References:
+   - Gemini API code samples with latest version.
+
+10. Visual Theme:
+   - Cosmic/star/energy abstract graphics.
+   - Indigo/blue Tailwind theme vars.
+   - Minimalist futuristic icons.
+
+✅ Final Notes:
+- Always generate a new assistant name (never reuse NovaAI).
+- Keep structure and layout intact.
+- Gemini AI must be clearly referenced as the backend engine.
+
+I need full complete updated code
+
+
+[Paste your full code here]
