@@ -10,21 +10,26 @@ const Message = require('./models/Message.js');
 const User = require('./models/User.js');
 
 const app = express();
+
+// ÉTAPE 1 : Indiquer à Express qu'il est derrière un proxy (Render.com)
+// Cela permet à Socket.IO de gérer correctement HTTPS et d'éviter les redirections 308.
+app.set('trust proxy', 1);
+
 const server = createServer(app);
+
+// ÉTAPE 2 : Configurer Socket.IO avec CORS et mode sécurisé
 const io = new Server(server, {
-  cors: {
-    origin: "https://chatroom-ivory-nine.vercel.app", // URL de votre frontend
-    methods: ["GET", "POST"]
-  }
-});
-/*const io = new Server(server, {
   cors: {
     origin: process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000",
     methods: ["GET", "POST"]
-  }
-});*/
+  },
+  // ÉTAPE 3 : Forcer le mode sécurisé car on est derrière HTTPS (Render)
+  secure: true
+});
 
 // Middleware
+// REMARQUE : Ce middleware CORS est utile pour vos routes API REST (comme /api/messages),
+// mais il n'affecte PAS Socket.IO. Socket.IO utilise sa propre config CORS ci-dessus.
 app.use(cors());
 app.use(express.json());
 
