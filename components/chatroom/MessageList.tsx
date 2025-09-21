@@ -82,6 +82,11 @@ export default function MessageList({ messages, currentUser }: MessageListProps)
   };
 
   const isOwnMessage = (message: Message) => {
+    // Vérifier que message.sender existe et a une propriété _id
+    if (!message.sender || !message.sender._id) {
+      console.warn('Message sender is undefined or missing _id:', message);
+      return false;
+    }
     return message.sender._id === currentUser._id;
   };
 
@@ -215,10 +220,10 @@ export default function MessageList({ messages, currentUser }: MessageListProps)
             <div className={`flex max-w-xs lg:max-w-md ${own ? 'flex-row-reverse' : 'flex-row'}`}>
               <div className={`flex-shrink-0 ${own ? 'ml-3' : 'mr-3'}`}>
                 <Avatar
-                  src={message.sender.avatar}
-                  alt={message.sender.name}
+                  src={message.sender?.avatar || ''}
+                  alt={message.sender?.name || 'Utilisateur'}
                   size={32}
-                  fallback={getInitials(message.sender.name)}
+                  fallback={message.sender?.name ? getInitials(message.sender.name) : 'U'}
                 />
               </div>
 
@@ -226,7 +231,7 @@ export default function MessageList({ messages, currentUser }: MessageListProps)
                 {!own && (
                   <div className="mb-1">
                     <span className="text-xs font-medium text-gray-700">
-                      {message.sender.name}
+                      {message.sender?.name || 'Utilisateur'}
                     </span>
                   </div>
                 )}

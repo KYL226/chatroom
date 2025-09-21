@@ -1,204 +1,253 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-require('dotenv').config();
-const express = require('express');
+require('dotenv').config({ path: '.env.local' });
 const { createServer } = require('http');
+const { parse } = require('url');
+const next = require('next');
 const { Server } = require('socket.io');
-const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const { connectDB } = require('./lib/mongodb.js');
-const Message = require('./models/Message.js');
-const User = require('./models/User.js');
+const mongoose = require('mongoose');
 
-const app = express();
+// Define User schema directly for CommonJS compatibility
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true, trim: true },
+  email: { type: String, required: true, unique: true, trim: true, lowercase: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['user', 'admin', 'moderator'], default: 'user' },
+  avatar: { type: String, default: '' },
+  bio: { type: String, default: '' },
+  isOnline: { type: Boolean, default: false },
+  lastSeen: { type: Date, default: Date.now },
+  isBanned: { type: Boolean, default: false },
+  banReason: { type: String, default: '' },
+  rooms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }]
+}, {
+  timestamps: true
+});
 
-// ÉTAPE 1 : Indiquer à Express qu'il est derrière un proxy (Render.com)
-// Cela permet à Socket.IO de gérer correctement HTTPS et d'éviter les redirections 308.
-app.set('trust proxy', 1);
+const User = mongoose.model('User', userSchema);
 
-const server = createServer(app);
+// Define Message schema directly for CommonJS compatibility
+const messageSchema = new mongoose.Schema({
+  content: { type: String, required: true },
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  room: { type: mongoose.Schema.Types.ObjectId, ref: 'Room' },
+  conversation: { type: mongoose.Schema.Types.ObjectId, ref: 'Conversation' },
+  attachments: [{ type: String }],
+  readBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  isEdited: { type: Boolean, default: false },
+  editedAt: { type: Date },
+  isDeleted: { type: Boolean, default: false },
+  deletedAt: { type: Date }
+}, {
+  timestamps: true
+});
 
-// ÉTAPE 2 : Configurer Socket.IO avec CORS et mode sécurisé
+const Message = mongoose.model('Message', messageSchema);
+
+const dev = process.env.NODE_ENV !== 'production';
+const hostname = 'localhost';
+const port = process.env.PORT || 3000;
+
+// Initialize Next.js app
+const app = next({ dev, hostname, port });
+const handle = app.getRequestHandler();
+
+app.prepare().then(() => {
+  const server = createServer((req, res) => {
+    const parsedUrl = parse(req.url, true);
+    handle(req, res, parsedUrl);
+  });
+
+  // Initialize Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: [
-      process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000",
-      "https://chatroom-ivory-nine.vercel.app", // Votre frontend Vercel
-      "http://localhost:3000" // Fallback pour le développement local
-    ],
-    methods: ["GET", "POST"],
+      origin: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+      methods: ['GET', 'POST'],
     credentials: true
-  },
-  // ÉTAPE 3 : Forcer le mode sécurisé car on est derrière HTTPS (Render)
-  secure: true
-});
+    }
+  });
 
-// Middleware
-// REMARQUE : Ce middleware CORS est utile pour vos routes API REST (comme /api/messages),
-// mais il n'affecte PAS Socket.IO. Socket.IO utilise sa propre config CORS ci-dessus.
-app.use(cors({
-  origin: [
-    process.env.NEXT_PUBLIC_CLIENT_URL || "http://localhost:3000",
-    "https://chatroom-ivory-nine.vercel.app", // Votre frontend Vercel
-    "http://localhost:3000" // Fallback pour le développement local
-  ],
-  credentials: true
-}));
-app.use(express.json());
+  // Connect to MongoDB
+  mongoose.connect(process.env.MONGODB_URI, {
+    bufferCommands: false,
+  }).then(() => {
+    console.log('✅ MongoDB connected successfully');
+  }).catch((error) => {
+    console.error('❌ MongoDB connection error:', error);
+  });
 
-// Healthcheck simple
-app.get('/health', (_req, res) => {
-  res.json({ ok: true });
-});
-
-// Connexion à MongoDB
-connectDB();
-
-// Middleware d'authentification Socket.io
+  // Socket.IO authentication middleware
 io.use(async (socket, next) => {
   try {
     const token = socket.handshake.auth.token;
     if (!token) {
-      return next(new Error('Token manquant'));
-    }
+        console.log('❌ No token provided');
+        return next(new Error('Authentication error'));
+      }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+      console.log('🔍 Verifying token:', token.substring(0, 20) + '...');
+      
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretkey');
+      console.log('✅ Token decoded:', { userId: decoded.userId, email: decoded.email });
+      
     const user = await User.findById(decoded.userId);
     
     if (!user) {
-      return next(new Error('Utilisateur non trouvé'));
+        console.log('❌ User not found:', decoded.userId);
+        return next(new Error('User not found'));
     }
 
-    socket.userId = decoded.userId;
-    socket.user = user;
+      console.log('✅ User found:', user.name, user.email);
+      socket.data.user = user;
+      socket.data.userId = decoded.userId;
     next();
   } catch (error) {
-    console.error('Authentification échouée:', error);
-    next(new Error('Authentification échouée'));
+      console.error('❌ Authentication failed:', error.message);
+      next(new Error('Authentication failed'));
   }
 });
 
-// Gestion des connexions Socket.io
+  // Socket.IO connection handling
 io.on('connection', (socket) => {
-  console.log(`Utilisateur connecté: ${socket.userId} (${socket.user.name})`);
+    console.log(`🔗 User connected: ${socket.data.userId}`);
 
-  // Rejoindre les salles de l'utilisateur
-  socket.on('join_rooms', async () => {
-    try {
-      // Rejoindre les salles publiques et privées de l'utilisateur
-      const user = await User.findById(socket.userId).populate('rooms');
-      if (user && user.rooms) {
-        user.rooms.forEach(room => {
-          socket.join(`room_${room._id}`);
+    socket.on('join_rooms', (roomIds) => {
+      if (Array.isArray(roomIds)) {
+        roomIds.forEach(roomId => {
+          socket.join(`room:${roomId}`);
+          console.log(`User ${socket.data.userId} joined room ${roomId}`);
         });
       }
-    } catch (error) {
-      console.error('Erreur lors de la jointure des salles:', error);
-    }
-  });
-
-  // Rejoindre une salle spécifique
-  socket.on('join_room', (roomId) => {
-    socket.join(`room_${roomId}`);
-    console.log(`Utilisateur ${socket.userId} a rejoint la salle ${roomId}`);
-  });
-
-  // Quitter une salle
-  socket.on('leave_room', (roomId) => {
-    socket.leave(`room_${roomId}`);
-    console.log(`Utilisateur ${socket.userId} a quitté la salle ${roomId}`);
-  });
-
-  // Nouveau message
-  socket.on('send_message', async (data) => {
-    try {
-      const { content, roomId, conversationId, attachments } = data;
-      
-      // Créer le message en base
-      const messageData = {
-        content,
-        sender: socket.userId,
-        attachments: attachments || []
-      };
-
-      if (roomId) {
-        messageData.room = roomId;
-      } else if (conversationId) {
-        messageData.conversation = conversationId;
-      }
-
-      const message = new Message(messageData);
-      await message.save();
-
-      // Populer les données du sender
-      await message.populate('sender', 'name avatar');
-
-      // Émettre le message aux autres utilisateurs
-      if (roomId) {
-        socket.to(`room_${roomId}`).emit('new_message', message);
-      } else if (conversationId) {
-        // Pour les conversations privées, émettre aux participants
-        // TODO: Implémenter la logique pour les conversations privées
-      }
-
-      // Confirmer l'envoi à l'expéditeur
-      socket.emit('message_sent', message);
-
-    } catch (error) {
-      console.error('Erreur lors de l\'envoi du message:', error);
-      socket.emit('message_error', { error: 'Erreur lors de l\'envoi du message' });
-    }
-  });
-
-  // Typing indicator
-  socket.on('typing_start', (data) => {
-    const { roomId } = data;
-    if (roomId) {
-      socket.to(`room_${roomId}`).emit('user_typing', {
-        userId: socket.userId,
-        userName: socket.user.name,
-        roomId
-      });
-    }
-  });
-
-  socket.on('typing_stop', (data) => {
-    const { roomId } = data;
-    if (roomId) {
-      socket.to(`room_${roomId}`).emit('user_stop_typing', {
-        userId: socket.userId,
-        roomId
-      });
-    }
-  });
-
-  // Déconnexion
-  socket.on('disconnect', () => {
-    console.log(`Utilisateur déconnecté: ${socket.userId}`);
-  });
-});
-
-// API Routes pour les messages (fallback)
-app.post('/api/messages', async (req, res) => {
-  try {
-    const { content, roomId, conversationId, sender } = req.body;
-    
-    const message = new Message({
-      content,
-      sender,
-      room: roomId,
-      conversation: conversationId
     });
 
-    await message.save();
-    await message.populate('sender', 'name avatar');
+    socket.on('join_conversations', (conversationIds) => {
+      if (Array.isArray(conversationIds)) {
+        conversationIds.forEach(conversationId => {
+          socket.join(`conversation:${conversationId}`);
+          console.log(`User ${socket.data.userId} joined conversation ${conversationId}`);
+        });
+      }
+    });
 
-    res.json(message);
+  socket.on('send_message', async (data) => {
+      const { roomId, conversationId, content, attachments } = data;
+
+    try {
+        const message = new Message({
+        content,
+          sender: socket.data.userId,
+          attachments: attachments || [],
+          room: roomId,
+          conversation: conversationId,
+        });
+
+      await message.save();
+
+        const populatedMessage = await Message.findById(message._id)
+          .populate('sender', 'name email avatar role _id');
+        
+        console.log('📤 Message créé:', {
+          id: populatedMessage._id,
+          content: populatedMessage.content,
+          sender: populatedMessage.sender ? {
+            _id: populatedMessage.sender._id,
+            name: populatedMessage.sender.name,
+            email: populatedMessage.sender.email
+          } : 'NO SENDER'
+        });
+
+        // Convertir le message en objet JavaScript simple pour Socket.IO
+        const messageToSend = {
+          _id: populatedMessage._id,
+          content: populatedMessage.content,
+          sender: populatedMessage.sender ? {
+            _id: populatedMessage.sender._id,
+            name: populatedMessage.sender.name,
+            email: populatedMessage.sender.email,
+            avatar: populatedMessage.sender.avatar || '',
+            role: populatedMessage.sender.role
+          } : null,
+          createdAt: populatedMessage.createdAt,
+          attachments: populatedMessage.attachments || []
+        };
+
+        console.log('📤 Message à envoyer:', messageToSend);
+
+      if (roomId) {
+          socket.to(`room:${roomId}`).emit('new_message', messageToSend);
+        } else if (conversationId) {
+          socket.to(`conversation:${conversationId}`).emit('new_message', messageToSend);
+        }
+
+        socket.emit('message_sent', messageToSend);
+
+    } catch (error) {
+        console.error('❌ Error sending message:', error);
+        socket.emit('message_error', { error: 'Failed to send message' });
+      }
+    });
+
+    socket.on('typing_start', ({ roomId, conversationId }) => {
+      const payload = {
+        userId: socket.data.userId,
+        userName: socket.data.user.name,
+      };
+
+    if (roomId) {
+        socket.to(`room:${roomId}`).emit('user_typing', { ...payload, roomId });
+      } else if (conversationId) {
+        socket.to(`conversation:${conversationId}`).emit('user_typing', { ...payload, conversationId });
+      }
+    });
+
+    socket.on('typing_stop', ({ roomId, conversationId }) => {
+      const payload = {
+        userId: socket.data.userId,
+      };
+
+    if (roomId) {
+        socket.to(`room:${roomId}`).emit('user_stopped_typing', { ...payload, roomId });
+      } else if (conversationId) {
+        socket.to(`conversation:${conversationId}`).emit('user_stopped_typing', { ...payload, conversationId });
+      }
+    });
+
+    socket.on('mark_as_read', async ({ roomId, conversationId, messageIds }) => {
+      try {
+        await Message.updateMany(
+          {
+            _id: { $in: messageIds },
+            sender: { $ne: socket.data.userId },
+          },
+          {
+            $addToSet: { readBy: socket.data.userId },
+          }
+        );
+
+        const payload = {
+          userId: socket.data.userId,
+          messageIds,
+        };
+
+        if (roomId) {
+          socket.to(`room:${roomId}`).emit('messages_read', { ...payload, roomId });
+        } else if (conversationId) {
+          socket.to(`conversation:${conversationId}`).emit('messages_read', { ...payload, conversationId });
+        }
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+        console.error('❌ Error marking messages as read:', error);
+      }
+    });
 
-const PORT = process.env.PORT || process.env.SOCKET_PORT || 3001;
-server.listen(PORT, () => {
-  console.log(`Serveur Socket.io démarré sur le port ${PORT}`);
+    socket.on('disconnect', () => {
+      console.log(`🔌 User disconnected: ${socket.data.userId}`);
+    });
+  });
+
+  server.listen(port, (err) => {
+    if (err) throw err;
+    console.log(`> Ready on http://${hostname}:${port}`);
+    console.log(`> Socket.IO server running on port ${port}`);
+  });
 });

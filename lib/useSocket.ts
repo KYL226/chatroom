@@ -12,17 +12,23 @@ export function useSocket(): UseSocketReturn {
   const [isConnected, setIsConnected] = useState(false);
   const [socketState, setSocketState] = useState<Socket | null>(null);
   const connectingRef = useRef(false);
-  const triedLocalhostFallbackRef = useRef(false);
-  const triedAlternatePortRef = useRef(false);
 
   const connect = useCallback((token: string) => {
     if (socketState?.connected || connectingRef.current) return;
+    
+    if (!token) {
+      console.error('❌ No token provided for Socket.IO connection');
+      return;
+    }
+    
+    console.log('🔌 Attempting to connect to Socket.IO with token:', token.substring(0, 20) + '...');
     connectingRef.current = true;
 
     // Configuration pour production et développement
+    // Use the same port as Next.js (3000) for development
     const computedDefault = typeof window !== 'undefined'
-      ? `${window.location.protocol}//${window.location.hostname}:3001`
-      : 'http://localhost:3001';
+      ? `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
+      : 'http://localhost:3000';
     
     // En production, utiliser l'URL du serveur Render
     const baseUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 
@@ -57,50 +63,10 @@ export function useSocket(): UseSocketReturn {
       console.error('Erreur de connexion Socket:', error);
       setIsConnected(false);
       connectingRef.current = false;
-      // Fallback localhost -> 127.0.0.1 si nécessaire
-      try {
-        const url = new URL(baseUrl);
-        if (!triedLocalhostFallbackRef.current && (url.hostname === 'localhost' || url.hostname === window.location.hostname)) {
-          triedLocalhostFallbackRef.current = true;
-          const alt = baseUrl.replace(url.hostname, '127.0.0.1');
-          const altSocket = io(alt, {
-            auth: { token },
-            path: '/socket.io',
-            transports: ['polling', 'websocket'],
-            forceNew: true,
-            reconnection: true,
-            reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000,
-            timeout: 10000
-          });
-          setSocketState(altSocket);
-        }
-      } catch {}
     });
 
     socket.on('error', (error) => {
       console.error('Socket error:', error);
-    });
-
-    socket.on('connect_timeout', () => {
-      try {
-        const url = new URL(baseUrl);
-        if (!triedAlternatePortRef.current && (url.port === '3001' || (!url.port && url.hostname === 'localhost'))) {
-          triedAlternatePortRef.current = true;
-          const alt = `${url.protocol}//${url.hostname}:3000`;
-          const altSocket = io(alt, {
-            auth: { token },
-            path: '/socket.io',
-            transports: ['polling', 'websocket'],
-            forceNew: true,
-            reconnection: true,
-            reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000,
-            timeout: 10000
-          });
-          setSocketState(altSocket);
-        }
-      } catch {}
     });
 
     setSocketState(socket);
