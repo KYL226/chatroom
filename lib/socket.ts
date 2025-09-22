@@ -28,11 +28,22 @@ export default function SocketHandler(req: NextApiRequest, res: NextApiResponse)
 
   console.log('🟢 Setting up new Socket.io server');
 
+  const allowedOrigins = (process.env.SOCKET_ALLOWED_ORIGINS || process.env.NEXT_PUBLIC_APP_URL || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (allowedOrigins.length === 0) {
+    allowedOrigins.push('http://localhost:3000');
+  }
+
   const io = new IOServer(socket.server, {
     cors: {
-      origin: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+      origin: allowedOrigins,
       methods: ['GET', 'POST'],
+      credentials: true,
     },
+    path: '/socket.io',
   });
 
   socket.server.io = io;

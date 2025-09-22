@@ -59,12 +59,22 @@ app.prepare().then(() => {
   });
 
   // Initialize Socket.IO
+const allowedOrigins = (process.env.SOCKET_ALLOWED_ORIGINS || process.env.NEXT_PUBLIC_APP_URL || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+if (allowedOrigins.length === 0) {
+  allowedOrigins.push('http://localhost:3000');
+}
+
 const io = new Server(server, {
   cors: {
-      origin: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+      origin: allowedOrigins,
       methods: ['GET', 'POST'],
-    credentials: true
-    }
+      credentials: true
+    },
+    path: '/socket.io'
   });
 
   // Connect to MongoDB
