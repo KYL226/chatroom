@@ -2,37 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Définition des variables CSS */
+/* === Définition des variables CSS === */
+/* Ton thème est sombre par défaut */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 🎨 Couleurs personnalisées pour le dark mode */
+  --background: #0d0d0d;         /* Fond très sombre */
+  --foreground: #f5f5f5;         /* Texte clair */
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
+  /* ✍️ Polices */
   --font-sans: var(--font-geist-sans, Arial, sans-serif);
   --font-mono: var(--font-geist-mono, monospace);
+
+  /* ✅ Forcer le thème sombre (empêche tout switch automatique) */
+  color-scheme: dark;
 }
 
-/* Thème sombre */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* === Styles globaux === */
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   font-family: var(--font-sans);
 }
 
-/* Styles pour la scrollbar stable dans le chat */
+/* === Scrollbar personnalisée pour les messages du chat === */
 .chat-messages-container {
   scrollbar-width: thin;
   scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
   overflow-anchor: none;
+  scroll-behavior: auto !important;
 }
 
 .chat-messages-container::-webkit-scrollbar {
@@ -50,9 +50,4 @@ body {
 
 .chat-messages-container::-webkit-scrollbar-thumb:hover {
   background-color: rgba(156, 163, 175, 0.7);
-}
-
-/* Empêcher le déplacement de la scrollbar */
-.chat-messages-container {
-  scroll-behavior: auto !important;
 }
